@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <p:growl id="growl" globalOnly="true" sticky="true" showDetail="true" life="5" autoUpdate="true" />
+        <f:metadata>
+            <f:viewParam name="termslug" value="#{mfdfaList.termSlug}"></f:viewParam>
+            <f:viewAction action="#{mfdfaList.fillTermMetaData()}" />
+        </f:metadata>
+        <div class="card">
+            <h1>Results for #{mfdfaList.termName}</h1>
+        </div>
+
+        <p:panel id="termMetaDataBlk">
+            <h:form id="termMetaData" >
+                <p:button styleClass="black-button" value="Back" outcome="Landing" />
+                <p:button styleClass="blue-button" style="margin-bottom:10px;" value="Analyse" outcome="MFDFACalc" rendered="#{mfdfaList.metaDoesNotExistForTerm}"/>
+
+                <p:dataTable var="termMetaData" value="#{mfdfaList.screenTermInstanceList}" reflow="true" paginator="true" rows="10" >
+                    <p:column headerText="#{mfdfaList.instanceMetaKeys[0].label}"  sortBy="#{termMetaData[mfdfaList.instanceMetaKeys[0].metaKey]}">
+                        <h:outputText value="#{termMetaData[mfdfaList.instanceMetaKeys[0].metaKey]}" />
+                    </p:column>
+                    <p:column headerText="#{mfdfaList.instanceMetaKeys[1].label}"  rendered="#{mfdfaList.instanceMetaKeys.size() > 1}" >
+                        <h:outputText value="#{termMetaData[mfdfaList.instanceMetaKeys[1].metaKey]}" rendered="#{mfdfaList.instanceMetaKeys.size() > 1}"/>
+                    </p:column>
+                    <p:column headerText="#{mfdfaList.instanceMetaKeys[2].label}"  rendered="#{mfdfaList.instanceMetaKeys.size() > 2}">
+                        <h:outputText value="#{termMetaData[mfdfaList.instanceMetaKeys[2].metaKey]}" />
+                    </p:column>
+
+                    <p:column headerText="View">
+                        <p:commandButton styleClass="button" icon="fa fa-eye" update=":termInstanceDetail" oncomplete="PF('termInstanceDialog').show()" title="View Detail">
+                            <f:setPropertyActionListener value="#{termMetaData}" target="#{mfdfaList.selectedMetaData}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Details">
+                        <p:commandButton styleClass="blue-button" icon="fa fa-bar-chart" title="View" action="#{mfdfaList.goToViewMFDFAesult()}" rendered="#{termMetaData['queued'] eq 'No'}">
+                            <f:setPropertyActionListener value="#{termMetaData}" target="#{mfdfaList.selectedMetaData}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Delete">
+                        <p:commandButton styleClass="red-button" update=":deleteTermMetaData" oncomplete="PF('delete').show()" icon="fa fa-trash"  title="Delete" rendered="#{termMetaData['allowDelete']}">
+                            <f:setPropertyActionListener value="#{termMetaData}" target="#{mfdfaList.selectedMetaData}" />
+                        </p:commandButton>
+
+                    </p:column>
+                </p:dataTable>
+
+
+            </h:form>
+        </p:panel>
+        <p:dialog header="Sure to delete" widgetVar="delete" minHeight="50">
+            <h:form id="deleteTermMetaData">
+                <p:commandButton styleClass="red-button" update=":msgdialog" oncomplete="PF('bui').show();PF('delete').hide()" value="Delete" action="#{mfdfaList.deleteMFDFAResults()}">
+                    <f:setPropertyActionListener value="#{mfdfaList.selectedMetaData}" target="#{mfdfaList.selectedMetaData}" />
+                </p:commandButton>
+            </h:form>
+        </p:dialog>
+        <p:dialog  widgetVar="termInstanceDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="50%">
+            <p:outputPanel id="termInstanceDetail" >
+                <p:dataTable var="metaKey" value="#{mfdfaList.instanceMetaKeys}">
+                    <p:column  headerText="Label">#{metaKey.label}</p:column>
+                    <p:column  headerText="Value">#{mfdfaList.selectedMetaData[metaKey.metaKey]}</p:column>
+                </p:dataTable>
+            </p:outputPanel>
+        </p:dialog>
+        <p:blockUI  block="termMetaDataBlk" widgetVar="bui">
+            <h:form id="msgdialog">
+                <p:messages id='messages' showDetail="true" autoUpdate="true" > </p:messages>
+
+            </h:form>
+        </p:blockUI>
+    </ui:define>
+
+</ui:composition>
+
+

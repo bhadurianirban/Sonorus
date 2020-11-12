@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/template.xhtml">
+            <ui:define name="content">
+                <p:growl id="growl" globalOnly="true" sticky="true" showDetail="true" life="5" autoUpdate="true" />
+                <f:metadata>
+                    <f:viewParam name="pts" value="#{childTermList.parentTermSlug}"></f:viewParam>
+                    <f:viewParam name="ptis" value="#{childTermList.parentTermInstanceSlug}"></f:viewParam>
+                    
+                    
+                    
+                    <f:viewAction action="#{childTermList.fillTermList()}"/>
+                </f:metadata>
+                <div class="card">
+                    <h1>List of terms related to #{childTermList.parentTermInstanceName} for term #{childTermList.parentTermName}</h1>
+                    <em>There are more than one terms related to #{childTermList.parentTermInstanceName} </em>
+                </div>
+                <p:panel id="termBlk">
+                    <h:form id="childtermlist">    
+                        
+                        
+                    
+                        <p:dataTable var="term" value="#{childTermList.termMetaListInMap}" reflow="true" paginator="true" rows="10">
+                            <p:column headerText="Term Name" sortBy="#{term['termName']}">
+                                <h:outputText value="#{term['termName']}" />
+                            </p:column>
+                            
+                            <p:column headerText="Meta Description" sortBy="#{term['description']}">
+                                <h:outputText value="#{term['description']}" />
+                            </p:column>
+                            
+                            <p:column headerText="Browse">
+                                <p:commandButton styleClass="button" icon="ui-icon-pencil" title="Browse" action="ChildTermInstanceList">
+                                    <f:setPropertyActionListener value="#{term}" target="#{childTermList.selectedTermMeta}" />
+                                </p:commandButton>
+                            </p:column>
+                            
+                        </p:dataTable>
+                    </h:form>
+                    <br />
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

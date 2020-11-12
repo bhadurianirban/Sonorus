@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="termslug" value="#{speechEmoResult.termSlug}"></f:viewParam>
+            <f:viewParam name="terminstanceslug" value="#{speechEmoResult.termInstanceSlug}"></f:viewParam>
+            <f:viewAction action="#{speechEmoResult.getSpeechEmoResultData()}"/>
+        </f:metadata>
+        <div class="card">
+            <h1>#{speechEmoResult.termName}</h1>
+        </div>
+        <p:panel id="termMetaDataBlk">
+
+
+            <p:panelGrid columns="2">
+                <h:outputLabel for="param" value="#{speechEmoResult.termScreenFieldsDesc['emotion']}" />
+                <h:outputText id="param" value="#{speechEmoResult.speechEmoResultInstance['emotion']}" />
+                <h:outputLabel for="dataseries" value="#{speechEmoResult.termScreenFieldsDesc['dataseries']}" />
+                <h:outputText id="dataseries" value="#{speechEmoResult.speechEmoResultInstance['dataseries']}" />
+                <h:outputLabel for="hurstexponent" value="#{speechEmoResult.termScreenFieldsDesc['mfdfainstance']}" />
+                <h:outputText id="hurstexponent" value="#{speechEmoResult.speechEmoResultInstance['mfdfainstance']}" />
+
+            </p:panelGrid>
+            <hr></hr>
+            <h:form>
+                <p:button styleClass="black-button" value="Back" outcome="SpeechEmoList"/>
+            </h:form>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>

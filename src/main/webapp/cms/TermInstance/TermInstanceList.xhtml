@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <p:growl id="growl" globalOnly="true" sticky="true" showDetail="true" life="5" autoUpdate="true" />
+        <f:metadata>
+            <f:viewParam name="termslug" value="#{termInstanceList.termSlug}"></f:viewParam>
+            <f:viewAction action="#{termInstanceList.fillTermMetaData()}" />
+        </f:metadata>
+        <div class="card">
+            <h1>View/Maintain #{termInstanceList.termName}</h1>
+        </div>
+
+        <p:panel id="termMetaDataBlk">
+            <h:form id="termMetaData">
+
+                <p:button styleClass="button" style="margin-bottom:10px;" value="Add" outcome="TermInstanceAdd" rendered="#{termInstanceList.metaDoesNotExistForTerm}"></p:button>
+                
+                <p:dataTable var="termMetaData" value="#{termInstanceList.screenTermInstanceList}" reflow="true" paginator="true" rows="10" >
+                    <p:column headerText="#{termInstanceList.instanceMetaKeys[0].label}"  sortBy="#{termMetaData[termInstanceList.instanceMetaKeys[0].metaKey]}">
+                        <h:outputText value="#{termMetaData[termInstanceList.instanceMetaKeys[0].metaKey]}" />
+                    </p:column>
+                    <p:column headerText="#{termInstanceList.instanceMetaKeys[1].label}"  rendered="#{termInstanceList.instanceMetaKeys.size() > 1}" >
+                        <h:outputText value="#{termMetaData[termInstanceList.instanceMetaKeys[1].metaKey]}" rendered="#{termInstanceList.instanceMetaKeys.size() > 1}"/>
+                    </p:column>
+                    <p:column headerText="#{termInstanceList.instanceMetaKeys[2].label}"  rendered="#{termInstanceList.instanceMetaKeys.size() > 2}">
+                        <h:outputText value="#{termMetaData[termInstanceList.instanceMetaKeys[2].metaKey]}" />
+                    </p:column>
+
+                    <p:column headerText="View">
+                        <p:commandButton styleClass="button" icon="fa fa-eye" update=":termInstanceDetail" oncomplete="PF('termInstanceDialog').show()" title="View Detail">
+                            <f:setPropertyActionListener value="#{termMetaData}" target="#{termInstanceList.selectedMetaData}" />
+                        </p:commandButton>
+                    </p:column>
+
+                    <p:column headerText="Change">
+                        <p:commandButton styleClass="button" icon="fa fa-pencil" title="Edit" action="#{termInstanceList.goToEditTermInstance()}">
+                            <f:setPropertyActionListener value="#{termMetaData}" target="#{termInstanceList.selectedMetaData}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Delete">
+                        <p:commandButton styleClass="delete-button" update=":deleteTermMetaData" oncomplete="PF('delete').show()" icon="fa fa-trash"  title="Delete" rendered="#{termMetaData['allowDelete']}">
+                            <f:setPropertyActionListener value="#{termMetaData}" target="#{termInstanceList.selectedMetaData}" />
+                        </p:commandButton>
+                        <h:outputText rendered="#{!termMetaData['allowDelete']}" value="Linked Data exists."/>
+                    </p:column>
+                </p:dataTable>
+
+            </h:form>
+
+            <h:form>
+                <p:commandButton styleClass="back-button" value="Back" action="Landing" />
+            </h:form>
+        </p:panel>
+
+        <p:dialog header="Sure to delete" widgetVar="delete" minHeight="50">
+            <h:form id="deleteTermMetaData">
+                <p:commandButton styleClass="red-button" update=":msgdialog" oncomplete="PF('bui').show();PF('delete').hide()" value="Delete" action="#{termInstanceList.deleteTermMetaData()}">
+                    <f:setPropertyActionListener value="#{termInstanceList.selectedMetaData}" target="#{termInstanceList.selectedMetaData}" />
+                </p:commandButton>
+            </h:form>
+        </p:dialog>
+
+        <p:blockUI  block="termMetaDataBlk" widgetVar="bui">
+            <h:form id="msgdialog">
+                <p:messages id='messages' showDetail="true" autoUpdate="true" > </p:messages>
+            </h:form>
+        </p:blockUI>
+
+        <p:dialog  widgetVar="termInstanceDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="50%">
+            <p:outputPanel id="termInstanceDetail" >
+                <p:dataTable var="metaKey" value="#{termInstanceList.instanceMetaKeys}">
+                    <p:column  headerText="Label">#{metaKey.label}</p:column>
+                    <p:column  headerText="Value">#{termInstanceList.selectedMetaData[metaKey.metaKey]}</p:column>
+                </p:dataTable>
+            </p:outputPanel>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

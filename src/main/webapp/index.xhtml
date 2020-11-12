@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>#{loginController.productName}</title>
+        <script type="text/javascript">
+            $(function () {
+                $('#menu-button').on('click', function (e) {
+                    $('#menu').toggleClass('overlay-menu');
+                    e.preventDefault();
+                });
+            });
+        </script>
+        <link rel="shortcut icon" type="image/x-icon" href="#{loginController.iconAndLogo}"/>
+        <ui:insert name="head"/>
+    </h:head>
+
+    <h:body styleClass="landing-body">
+        <div class="landing-wrapper">
+            <div class="landing-header">
+                <div class="landing-header-content clearfix">
+                    <image src="#{loginController.iconAndLogo}" width="35" height="40"/>
+
+                    <a id="menu-button" href="#">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <ul id="menu">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#fractalStudio">Introduction</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#mobile">Mobile</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+<!--                        <li><a href="#video">Video</a></li>-->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="intro">
+                <image src="#{loginController.selectedHomeImg}"  height="700" width="100%"/>
+                <div class="intro-content">
+                    <span class="title">#{loginController.productName}</span>
+                    <span class="subtitle">#{loginController.productCaption} </span>
+                    <div id="indeximage">
+                        <image src="#{loginController.homeScreenLogo}" height="100%"/>
+                    </div>
+                    <div id="loginhost">
+                        <p:button  styleClass="button" value="Enter #{loginController.tenantName}" outcome="Login" />
+                    </div>
+                    <div id="changehost">
+                        <p:button  styleClass="button" value="Other" outcome="SelectTenant" />
+                    </div>
+                </div>
+            </div>
+            <div id="fractalStudio">
+                <div class="fractalStudio-content">
+                    <div class="title">#{loginController.productName}</div>
+                    <div class="subtitle">Speech Emotion recognition with fractals.</div>
+                    <div class="content"><p>Communication with computing machinery has become increasingly 'chatty' these days: Alexa, Cortana, Siri, and many more dialogue systems have hit the consumer market on a broader basis than ever, but do any of them truly notice our emotions and react to them like a human conversational partner would?</p>
+
+<p>In fact, the discipline of automatically recognizing human emotion and affective states from speech, usually referred to as Speech Emotion Recognition or SER for short, has by now surpassed the "age of majority," celebrating the 22<sup>nd</sup> anniversary after the seminal work of Daellert in 1996 —arguably the first research paper on the topic. However, the idea has existed even longer, as the first patent dates back to the late 1970s.</p>
+
+<p>Very little serious research had gone into the mechanism behind detection of emotional fluctuations from speech. The classical philosophical ideas are still valid, and if that is not the case people would not spend billions on detection of emotional state of a person from speech each year.</p>
+
+<p>Most of the previous studies on speech emotion recognition have normally used pattern recognition methods using extracted acoustic features (such as pitch, energy and Melfrequency filter banks, Mel-frequency cepstral coefficients (MFCCs) etc.) from audio files. Popular classifiers are the linear discriminate classifier (Roy D, Pentland A (1996)) and the k-nearest neighbor (k-NN) Averill J (1994). In addition to the linear discriminate classifiers, Support Vector Machine (SVM) also achieves promising classification performance (You M, Chen C, Bu J, Liu J, Tao J (2006)). Non-linear discriminative classifiers such as Artificial Neural Network (ANN) and decision trees are also employed because of their robust performances in certain cases. However the same feature vector can even produce totally different classification results using different algorithms. Also, extraction and selection of features play an important role in emotional modeling and in deciding on what emotion should be perceived from a particular speech. Other important factors include speaking/listening mechanism, linguistics etc. Recently, Deep Belief Network models are attempted for emotional classification of audiovisual data, by capturing complex non-linear feature interactions in multimodal data (audio and video features).</p>
+
+<p>In view of the above, it can be summarized that most of the speech emotion categorization techniques rely on the frequency-domain stationary methods like Fourier power spectrum. These methods have been strongly questioned for non-stationary aspects of signal. In any signal the spectrum covers wide range of frequencies and the numerous harmonics are left unattended by Fourier spectral analysis, which is mostly based on linear super-positions of trigonometric functions. Additional harmonic components, as is common in most natural non-stationary time-series, of which speech signal is one, may produce a deformed wave profile. Those deformations are the well-known consequence of nonlinear contributions. These nonlinear and non-stationary aspects contribute towards minute changes of the intricate dynamics of speech signal, which might be caused by any cognitive impairment, restricting proper emotional expression, due to complex diseases like Alzheimer's Disease (AD). Not much has been done in this area by analyzing the nonstationary aspects of the speech signal.</p>
+
+<p>In this product, rigorous non-stationary methodology capable of categorization of speech signals of various emotions is done. Multifractal Detrended Fluctuation Analysis (MFDFA) method is used to analyze the internal dynamics of the acoustics of digitized audio signal. Other non-linear methods like the visibility graph that can assess the degree of multifractality accurately and reliably are also being taken into account. </p></div>
+                </div>
+            </div>
+            <div id="features">
+                <div class="features-content">
+                    <span class="feature-title">#{loginController.productName}</span>
+                    <p>#{loginController.productCaption}</p>
+
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_1.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Responsive</span>
+                                <p>Kogi Cosby sweater ethical squid irony disrupt, organic tote bag gluten-free.</p>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_2.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Clean</span>
+                                <p>Bushwick meh Blue Bottle pork belly mustache skateboard 3 wolf moon.</p>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_3.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Grid</span>
+                                <p>Banjo tote bag bicycle rights, High Life sartorial cray craft beer whatever.</p>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_4.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Modern</span>
+                                <p>Retro occupy organic, stumptown shabby chic pour-over roof party DIY.</p>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_5.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Documented</span>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam enim numquam.</p>
+                            </span>
+                        </div>
+                        <div class="ui-g-12 ui-md-4">
+                            <p:graphicImage name="images/landing/section2_6.png" library="omega-layout" styleClass="feature-icon"/>
+                            <span class="feature-text">
+                                <span>Support</span>
+                                <p>Retro occupy organic, stumptown shabby chic pour-over roof party DIY.</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mobile">
+                <div class="mobile-content">
+                    <span class="title">Fully Responsive Design</span>
+                    <span class="subtitle">Can be used through mobiles.</span>
+                    <p:graphicImage name="images/mobile.jpeg" library="term" width="310" height="447"/>
+                    
+                </div>
+            </div>
+
+            <div id="pricing">
+                <div class="pricing-content">
+                    <span class="pricing-title">Pricing</span>
+                    <p>Prices are predictive and is negotiable.</p>
+
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-4">
+                            <div class="pricing-basic pricing-box">
+                                <span class="pricing-name">Basic</span>
+                                <div class="pricing-fee">₹10,000</div>
+
+                                <p>1 years of service</p>
+                                <p>1GB Data Storage</p>
+                                <p>2 Users</p>
+                                <p>2 months free maintenance</p>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-4">
+                            <div class="pricing-standard pricing-box">
+                                <span class="pricing-name">Standard</span>
+                                <div class="pricing-fee">₹20,000</div>
+
+                                <p>2 years of service</p>
+                                <p>5GB Data Storage</p>
+                                <p>10 Users</p>
+                                <p>1 years free maintenance</p>
+                            </div>
+                        </div>
+
+                        <div class="ui-g-12 ui-md-4">
+                            <div class="pricing-professional pricing-box">
+                                <span class="pricing-name">Professional</span>
+                                <div class="pricing-fee">₹60,000</div>
+
+                                <p>5 years of service</p>
+                                <p>10GB Data Storage</p>
+                                <p>50 Users</p>
+                                <p>Free maintenance</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="video">
+                <div class="video-content">
+                    <span class="video-title">Let's Start</span>
+                    <p>And the day came when the risk to remain tight in a bud was more painful than the risk it took to blossom</p>
+                    <p:button  styleClass="button" value="Enter #{loginController.productName} for tenant #{loginController.tenantName}" outcome="Login" />
+<!--                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/GHAMyHerv90" frameborder="0" width="560"></iframe>
+                    </div>-->
+                </div>
+            </div>
+
+            <div class="landing-footer">
+                <div class="landing-footer-content">
+
+
+                    <div class="footer-bottom">
+                        ©  <a class="tag-cloud-link" href="http://www.dgfoundation.in">Deepa Ghosh Research Foundation</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h:outputStylesheet name="css/layout.css" library="omega-layout" />
+        <h:outputStylesheet name="#{loginController.selectedTheme}" library="term" />
+    </h:body>
+
+</html>

@@ -1,0 +1,411 @@
+.main-body {
+    background-color: #6a6ce2;
+}
+.landing-wrapper .intro {
+    position: relative;
+}
+
+.landing-wrapper .intro .intro-content {
+    margin: 0 auto;
+    color: #ffffff;
+}
+
+.landing-wrapper .intro .intro-content .title{
+    position: absolute;
+    top: 200px;
+    font-size: 64px;
+    padding-left: 180px;
+}
+.landing-wrapper .intro .intro-content .subtitle{
+    position: absolute;
+    top: 275px;
+    font-size: 24px;
+    padding-left: 180px;
+}
+.landing-wrapper .intro .intro-content #indeximage{
+    position: absolute;
+    top: 200px;
+    right: 100px;
+    height: 320px;
+}
+.landing-wrapper .intro .intro-content #loginhost .ui-button {
+    position: absolute;
+    top: 330px;
+    left: 180px;
+    padding: 10px 40px 10px 40px; 
+}
+.landing-wrapper .intro .intro-content #changehost .ui-button {
+    position: absolute;
+    top: 400px;
+    left: 180px;
+    padding: 10px 20px 10px 20px; 
+}
+
+@media (max-width: 64em) {
+    .landing-wrapper .intro {
+        position: relative;
+    }
+
+    .landing-wrapper .intro .intro-content .title {
+        padding-left: 80px;
+        top: 150px;
+        font-size: 36px;
+        display: block;
+    }
+    .landing-wrapper .intro .intro-content .subtitle {
+        font-size: 20px;
+        padding-left: 20px;
+        top: 200px;
+        text-align: center;
+        display: block;
+    }
+    .landing-wrapper .intro .intro-content #indeximage {
+        top: 250px;
+        right: 80px;
+        height: 120px;
+    }
+    .landing-wrapper .intro .intro-content #loginhost .ui-button {
+
+        top: 400px;
+        left: 40px;
+        padding: 10px 40px 10px 40px; 
+    }
+    .landing-wrapper .intro .intro-content #changehost .ui-button {
+
+        top: 450px;
+        left: 40px;
+        padding: 10px 61px 10px 61px; 
+    }
+}
+.landing-wrapper .landing-header {
+    height: 56px;
+     background: rgba(3, 26, 63,1);
+    background: -moz-linear-gradient(left, rgba(3, 26, 63,0.7) 0%, rgba(2, 16, 38,0.7) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(3, 26, 63,0.7)), color-stop(100%, rgba(2, 16, 38,0.7)));
+    background: -webkit-linear-gradient(left, rgba(3, 26, 63,0.7) 0%, rgba(2, 16, 38,0.7) 100%);
+    background: -o-linear-gradient(left, rgba(3, 26, 63,0.7) 0%, rgba(2, 16, 38,0.7) 100%);
+    background: -ms-linear-gradient(left, rgba(3, 26, 63,0.7) 0%, rgba(2, 16, 38,0.7) 100%);
+    background: linear-gradient(to right, rgba(3, 26, 63,0.7) 0%, rgba(2, 16, 38,0.7) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#031a3f', endColorstr='#021026', GradientType=1 );
+}
+.landing-wrapper .landing-header .landing-header-content {
+    width: 90%;
+
+    padding-top: 17px;
+
+}
+.landing-wrapper .landing-header .landing-header-content img {
+    display: inline-block;
+    margin-top: -7px; }
+.landing-wrapper .landing-header .landing-header-content ul li a {
+    text-decoration: none;
+    padding: 12px 10px;
+    color: #ffffff;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px; 
+    -webkit-transition: 0.5s ease-out;
+    -moz-transition: 0.5s ease-out;
+    -o-transition: 0.5s ease-out;
+    transition: 0.5s ease-out;}
+.landing-wrapper .landing-header .landing-header-content ul li a:hover {
+    background-color: #ffffff;
+    color: rgba(2, 16, 38,1); }
+@media (max-width: 64em) {
+    .landing-wrapper .landing-header .landing-header-content {
+        width: 100%;
+        padding: 17px 20px 0 20px; 
+    }
+    .landing-wrapper .landing-header .landing-header-content ul {
+        float: none;
+        position: fixed;
+        top: 56px;
+        right: 0px;
+        background: rgba(3, 26, 63,1);
+        background: -moz-linear-gradient(left, rgba(3, 26, 63,0.9) 0%, rgba(2, 16, 38,0.9) 100%);
+        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(23, 26, 63,0.9)), color-stop(100%, rgba(2, 16, 38,0.9)));
+        background: -webkit-linear-gradient(left, rgba(3, 26, 63,0.9) 0%, rgba(2, 16, 38,0.9) 100%);
+        background: -o-linear-gradient(left, rgba(3, 26, 63,0.9) 0%, rgba(2, 16, 38,0.9) 100%);
+        background: -ms-linear-gradient(left, rgba(3, 26, 63,0.9) 0%, rgba(2, 16, 38,0.9) 100%);
+        background: linear-gradient(to right, rgba(3, 26, 63,0.9) 0%, rgba(2, 16, 38,0.9) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#031a3f', endColorstr='#021026', GradientType=1 );
+        display: none;
+        margin: 0; 
+    }
+}
+
+@media (max-width: 64em) {
+    .landing-wrapper #introduction .introduction-content .subsubtitle {
+        padding-bottom: 30px;
+        font-size: 12px;
+        position: absolute;
+        display: block; }}
+@media (min-width: 64em) {
+    .landing-wrapper #introduction .introduction-content .subsubtitle {
+        font-size: 12px;
+        position: absolute;
+        top: 310px;}}
+
+#login-wrapper #login-container {
+    height: 350px;
+}
+/*General Button*/
+.ui-button.ui-state-default.button {
+  
+    -webkit-transition: 0.5s ease-out;
+    -moz-transition: 0.5s ease-out;
+    -o-transition: 0.5s ease-out;
+    transition: 0.5s ease-out; 
+    background-color: #031a3f;
+    
+}
+.ui-button.ui-state-default.button.ui-state-hover {
+    background-color: #213656; }
+.ui-button.ui-state-default.button.ui-state-active {
+    background-color: #213656; }
+
+/*Delete Button*/
+.ui-button.ui-state-default.delete-button {
+  
+    -webkit-transition: 0.5s ease-out;
+    -moz-transition: 0.5s ease-out;
+    -o-transition: 0.5s ease-out;
+    transition: 0.5s ease-out; 
+    background-color: #b8312e;
+    border-color: #9c1627;
+}
+.ui-button.ui-state-default.delete-button.ui-state-hover {
+    background-color: #d2524f; }
+.ui-button.ui-state-default.delete-button.ui-state-active {
+    background-color: #9c1627; }
+
+/*Back Button*/
+.ui-button.ui-state-default.back-button {
+  
+    -webkit-transition: 0.5s ease-out;
+    -moz-transition: 0.5s ease-out;
+    -o-transition: 0.5s ease-out;
+    transition: 0.5s ease-out; 
+    background-color: #0084b4;
+    border-color: #087298;
+}
+.ui-button.ui-state-default.back-button.ui-state-hover {
+    background-color: #03A8E4; }
+.ui-button.ui-state-default.back-button.ui-state-active {
+    background-color: #087298; }
+
+/*topbar color*/
+.wrapper .topbar {
+    background: rgba(3, 26, 63,1);
+    background: -moz-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(3, 26, 63,1)), color-stop(100%, rgba(2, 16, 38,1)));
+    background: -webkit-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: -o-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: -ms-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: linear-gradient(to right, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#031a3f', endColorstr='#021026', GradientType=1 );
+}
+/*sidebar color*/
+.wrapper .sidebar {
+
+    background: rgba(3, 26, 63,1);
+    background: -moz-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(3, 26, 63,1)), color-stop(100%, rgba(2, 16, 38,1)));
+    background: -webkit-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: -o-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: -ms-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: linear-gradient(to right, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#031a3f', endColorstr='#021026', GradientType=1 );
+
+}
+/*menu colour*/
+.wrapper .sidebar ul li.active-menuitem > a {
+        border-bottom: 0 none;
+        background-color: rgba(12,18,7,1);
+        color: white; 
+}
+.wrapper .sidebar ul li.active-menuitem > ul {
+        background-color: rgba(12,18,7,1); 
+}
+/*footer color*/
+.wrapper .footer {
+    background-color: #6a6ce2;
+}
+/*paginator buttons*/
+
+.ui-paginator .ui-paginator-page.ui-state-active {
+    background-color: rgb(38,50,56);
+    border:none;
+}
+    
+.landing-wrapper #pricing {
+    background-color: #aed581; }
+.landing-wrapper #pricing .pricing-content p {
+    color: #000000; 
+
+}
+.landing-wrapper #pricing .pricing-content > p {
+    font-size: 14px; }
+.login-body {
+    background: rgba(3, 26, 63,1);
+    background: -moz-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(3, 26, 63,1)), color-stop(100%, rgba(2, 16, 38,1)));
+    background: -webkit-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: -o-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: -ms-linear-gradient(left, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    background: linear-gradient(to right, rgba(3, 26, 63,1) 0%, rgba(2, 16, 38,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#031a3f', endColorstr='#021026', GradientType=1 );
+}
+
+
+
+q {
+    font-size: 18px;
+}
+.inline-hyperlink {
+
+    border-style: solid;
+    border-color: rgba(7,38,35,0.2);
+    border-width: 1px 1px 1px 1px;
+    padding-left: 0.5%;
+    padding-right: 0.5%;
+    color: black;
+    background-color: rgba(179,172,179,0.1);
+    -webkit-transition: 0.3s ease-out;
+    -moz-transition: 0.3s ease-out;
+    -o-transition: 0.3s ease-out;
+    transition: 0.3s ease-out;
+}
+.inline-hyperlink:hover {
+    background-color: rgba(179,172,179,1);
+    border-color: rgba(179,172,179,0.1);
+
+}
+.btn-large {
+    text-transform: none;
+}
+.btn {
+    text-transform: none;
+}
+.tag-cloud-link {
+    color: #004080;
+    text-decoration: none;
+    border-style: solid;
+    border-color:  rgba(38,50,56,0);
+    border-width: 1px;
+    border-radius: 3px 3px 3px 3px;
+    -webkit-transition: 0.9s ease-out;
+    -moz-transition: 0.9s ease-out;
+    -o-transition: 0.9s ease-out;
+    transition: 0.9s ease-out;
+    -webkit-transition: 0.9s ease-in;
+    -moz-transition: 0.9s ease-in;
+    -o-transition: 0.9s ease-in;
+    transition: 0.9s ease-in;  
+    padding: 0.3%;
+}
+.tag-cloud-link:hover {
+    color: white;
+    background-color: rgba(38,50,56,1);
+    border-color:  rgba(38,50,56,1);
+}
+.method-list li {
+    border-style: solid;
+    border-color: #3e2723;
+    border-width: 1px;
+    border-radius: 3px 3px 3px 3px;
+    margin: 5px;
+    padding: 1%;
+}
+.method-list-hr {
+    color: black;
+}
+.method-list-action {
+    border-style: solid;
+    border-color: #3e2723;
+    border-width: 1px;
+    border-radius: 3px 3px 3px 3px;
+    margin: 5px;
+    padding: 1%;
+}
+.author {
+    text-align: right;
+    font-size: 18px;
+}
+
+.card {
+    background: rgba(70, 60, 209,1);
+    color: whitesmoke;
+}
+.ui-panel  {
+    background: rgb(70, 60, 209);
+    border: none;
+     
+}
+.ui-widget-header {
+    background: rgb(199, 196, 237);
+    border-color: black;
+   
+}
+.instanceform {
+    
+    padding: 2%;
+    background: rgb(27, 20, 119);
+}
+.ui-datatable-even ,.ui-datatable-odd{
+    background: rgb(199, 196, 237);
+    
+    font-size: 12px;
+}
+.ui-datatable th.ui-state-default {
+     background: rgb(27, 20, 119);
+     border-color: black;
+     color: white;
+     text-align: left;
+     font-size: 12px;
+}
+.ui-datatable tbody > tr.ui-widget-content {
+    
+     border-color: black;
+     
+}
+
+.ui-corner-all {
+    border-radius: 0px;
+}
+.ui-corner-top {
+    border-radius: 0px;
+}
+.ui-corner-bottom {
+    border-radius: 0px;
+}
+.ui-panelgrid .ui-widget-content {
+     background: rgb(199, 196, 237);
+     border-color: black;
+     color: black;
+     text-align: left;
+     font-size: 12px;
+}
+.dynaFormLabel {
+    margin-bottom: 5%;
+    color: white;
+}
+
+#fractalStudio .fractalStudio-content {
+    background: rgb(199, 196, 237);
+    height: 100%;
+}
+#fractalStudio .fractalStudio-content .title {
+    padding-top: 2%;
+    text-align: center;
+    font-size: 3em;
+}
+#fractalStudio .fractalStudio-content .subtitle {
+    padding-top: 1%;
+    text-align: center;
+    font-size: 2em;
+}
+#fractalStudio .fractalStudio-content .content {
+     padding: 1.5em;
+    text-align: center;
+}

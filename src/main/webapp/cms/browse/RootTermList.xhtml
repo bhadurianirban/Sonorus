@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/template.xhtml">
+            <ui:define name="content">
+                <p:growl id="growl" globalOnly="true" sticky="true" showDetail="true" life="5" autoUpdate="true" />
+                <f:metadata>
+                    <f:viewAction action="#{rootTermList.fillTermList()}"/>
+                </f:metadata>
+                <div class="card">
+                    <h1>List of Root Entities</h1>
+                    
+                </div>
+                <p:panel id="termBlk">
+                    <h:form id="roottermlist">    
+                        
+                        <p:button styleClass="back-button" value="Back" outcome="Landing" />
+                        <br /><br />
+                    
+                        <p:dataTable var="term" value="#{rootTermList.termListInMap}" reflow="true" paginator="true" rows="10">
+                            
+                            <p:column headerText="Name" sortBy="#{term['termName']}">
+                                <h:outputText value="#{term['termName']}" />
+                            </p:column>
+                            <p:column headerText="Description" sortBy="#{term['termDescription']}">
+                                <h:outputText value="#{term['termDescription']}" />
+                            </p:column>
+                            
+                            <p:column headerText="View Instances">
+                                <p:commandButton styleClass="button" icon="ui-icon-pencil" title="Browse" action="RootTermInstanceList">
+                                    <f:setPropertyActionListener value="#{term}" target="#{rootTermList.selectedTerm}" />
+                                </p:commandButton>
+                            </p:column>
+                            
+                        </p:dataTable>
+                    </h:form>
+                    <br />
+                   
+                        
+                   
+                </p:panel>
+
+                
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

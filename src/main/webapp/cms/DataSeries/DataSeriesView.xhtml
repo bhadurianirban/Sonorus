@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template.xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewParam name="termslug" value="#{dataSeriesView.termSlug}"></f:viewParam>
+            <f:viewParam name="terminstanceslug" value="#{dataSeriesView.termInstanceSlug}"></f:viewParam>
+            <f:viewParam name="cumulative" value="#{dataSeriesView.cumulative}"></f:viewParam>
+            <f:viewAction action="#{dataSeriesView.getDataSeriesData()}" />
+        </f:metadata>
+        <p:chart type="line" model="#{dataSeriesView.dataSeriesPlotModel}" style="height:500px;" widgetVar="chart"/>
+        <p:commandButton type="button" styleClass="blue-button" value="Export" icon="ui-icon-extlink" onclick="exportChart()"/>
+        <p:button  value="Back" styleClass="black-button" outcome="DataSeriesList" />
+        <p:dialog widgetVar="dlg" showEffect="fade" modal="true" header="Chart as an Image" resizable="false">
+            <p:outputPanel id="output" layout="block" style="height:500px"/>
+        </p:dialog>
+
+        <script type="text/javascript">
+            function exportChart() {
+                //export image
+                $('#output').empty().append(PF('chart').exportAsImage());
+
+                //show the dialog
+                PF('dlg').show();
+            }
+        </script>
+    </ui:define>
+
+</ui:composition>

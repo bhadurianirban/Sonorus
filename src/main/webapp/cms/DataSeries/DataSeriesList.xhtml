@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/WEB-INF/template.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <p:growl id="growl" globalOnly="true" sticky="true" showDetail="true" life="5" autoUpdate="true" />
+        <f:metadata>
+            <f:viewParam name="termslug" value="#{dataSeriesList.termSlug}"></f:viewParam>
+            <f:viewAction action="#{dataSeriesList.fillTermMetaData()}" />
+        </f:metadata>
+        <div class="card">
+            <h1>View/Maintain #{dataSeriesList.termName}</h1>
+        </div>
+        
+        <p:panel id="termMetaDataBlk">
+            <h:form id="termMetaData" >
+                <p:button styleClass="black-button" value="Back" outcome="Landing" />
+                <p:button styleClass="blue-button" style="margin-bottom:1%;"  value="Add" outcome="DataSeriesAdd" rendered="#{dataSeriesList.metaDoesNotExistForTerm}"/>
+               
+                <p:dataTable var="termMetaData" value="#{dataSeriesList.screenTermInstanceList}" reflow="true" paginator="true" rows="10" >
+                    <p:column  headerText="#{dataSeriesList.termScreenFieldsDesc['name']}" >
+                        <h:outputText value="#{termMetaData['name']}" />
+                    </p:column>
+                    <p:column  headerText="#{dataSeriesList.termScreenFieldsDesc['id']}" >
+                        <h:outputText value="#{termMetaData['id']}" />
+                    </p:column>
+                    <p:column  headerText="#{dataSeriesList.termScreenFieldsDesc['orgfilename']}" >
+                        <h:outputText value="#{termMetaData['orgfilename']}" />
+                    </p:column>
+                    <p:column headerText="View">
+                        <p:commandButton styleClass="blue-button" icon="fa fa-bar-chart" title="View" action="#{dataSeriesList.goToViewDataSeries('No')}" >
+                            <f:setPropertyActionListener value="#{termMetaData}" target="#{dataSeriesList.selectedMetaData}" />
+                        </p:commandButton>
+                        <p:commandButton  icon="fa fa-line-chart" title="View Cumulative" action="#{dataSeriesList.goToViewDataSeries('Yes')}" rendered="#{termMetaData['type'] eq -1}">
+                            <f:setPropertyActionListener value="#{termMetaData}" target="#{dataSeriesList.selectedMetaData}" />
+                        </p:commandButton>
+                    </p:column>
+                    <p:column headerText="Delete">
+                        <p:commandButton styleClass="red-button" update=":deleteTermMetaData" oncomplete="PF('delete').show()" icon="fa fa-trash"  title="Delete" rendered="#{termMetaData['allowDelete']}">
+                            <f:setPropertyActionListener value="#{termMetaData}" target="#{dataSeriesList.selectedMetaData}" />
+                        </p:commandButton>
+                        <p:outputLabel value="Analysis exists for Data" rendered="#{!termMetaData['allowDelete']}"/>
+                    </p:column>
+                </p:dataTable>
+            
+                
+            </h:form>
+        </p:panel>
+        <p:dialog header="Sure to delete" widgetVar="delete" minHeight="50">
+            <h:form id="deleteTermMetaData">
+                <p:commandButton styleClass="red-button" update=":msgdialog" oncomplete="PF('bui').show();PF('delete').hide()" value="Delete" action="#{dataSeriesList.deleteDataSeries()}">
+                    <f:setPropertyActionListener value="#{dataSeriesList.selectedMetaData}" target="#{dataSeriesList.selectedMetaData}" />
+                </p:commandButton>
+            </h:form>
+        </p:dialog>
+        <p:blockUI  block="termMetaDataBlk" widgetVar="bui">
+            <h:form id="msgdialog">
+                <p:messages id='messages' showDetail="true" autoUpdate="true" > </p:messages>
+                
+            </h:form>
+        </p:blockUI>
+    </ui:define>
+
+</ui:composition>

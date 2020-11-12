@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/template.xhtml">
+            <ui:define name="content">
+                <f:metadata>
+                    <f:viewParam name="termslug" value="#{mediaEdit.termSlug}"></f:viewParam>
+                    <f:viewParam name="terminstanceslug" value="#{mediaEdit.termInstanceSlug}"></f:viewParam>
+                    <f:viewAction action="#{mediaEdit.createMetaDataEditForm()}"/>
+                </f:metadata>
+                <div class="card">
+                    <h1>Edit #{mediaEdit.termName}</h1>
+                </div>
+                <h:form styleClass="instanceform"> 
+
+                    <p:growl autoUpdate="true"/>     
+                    <p:panelGrid columns="2">
+                        <h:outputLabel for="medianame" value="#{mediaEdit.termScreenFieldLabels['name']}" />
+                        <h:inputText id="medianame" value="#{mediaEdit.screenTermInstance['name']}" />
+                        
+                        <h:outputLabel for="filename" value="#{mediaEdit.termScreenFieldLabels['filename']}" />
+                        <h:outputText id="filename" value="#{mediaEdit.screenTermInstance['filename']}" />
+                        
+                        <h:outputLabel for="awsurl" value="#{mediaEdit.termScreenFieldLabels['awsurl']}" />
+                        <h:outputLink id="awsurl" value="#{mediaEdit.screenTermInstance['awsurl']}" target="_blank" >
+                            Open Link
+                        </h:outputLink>
+                        
+                        <h:outputLabel for="awskey" value="#{mediaEdit.termScreenFieldLabels['awskey']}" />
+                        <h:outputText id="awskey" value="#{mediaEdit.screenTermInstance['awskey']}" />
+                        
+                        <h:outputLabel for="user" value="#{mediaEdit.termScreenFieldLabels['user']}" />
+                        <h:outputText id="user" value="#{mediaEdit.screenTermInstance['user']}" />
+                        
+                        <h:outputLabel for="mediatype" value="#{mediaEdit.termScreenFieldLabels['mediatype']}" />
+                        <h:outputText id="mediatype" value="#{mediaEdit.screenTermInstance['mediatype']}" />
+                    </p:panelGrid>
+                    <div class="card">
+                        <p:commandButton styleClass="button" style="margin-right: 3%" value="Save" action="#{mediaEdit.editTermInstance()}"></p:commandButton>
+                        <p:button styleClass="back-button" value="Back" outcome="MediaList" />
+                    </div>
+
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

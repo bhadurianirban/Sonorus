@@ -1,0 +1,926 @@
+<?xml version="1.0" encoding="utf-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    
+    <name>primefaces_omega</name>
+    
+    <component>
+        <component-type>org.primefaces.component.OmegaMenu</component-type>
+        <component-class>org.primefaces.omega.component.menu.OmegaMenu</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.OmegaMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.omega.component.menu.OmegaMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+    <navigation-rule>
+
+        <navigation-case>
+            <from-action>#{loginController.moveToDefaultHost}</from-action>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{loginController.moveToDefaultHost}</from-action>
+            <from-outcome>access</from-outcome>
+            <to-view-id>/access.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>Landing</from-outcome>
+            <to-view-id>/cms/Landing.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <!--    Navigation cases for Term Browse-->
+    <!--    Navigation cases for Root Term List-->
+    <navigation-rule>
+        <from-view-id>/cms/browse/RootTermList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>RootTermInstanceList</from-outcome>
+            <to-view-id>/cms/browse/RootTermInstanceList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{rootTermList.selectedTerm['termSlug']}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>
+    </navigation-rule>
+    <!--    Navigation cases for Root Term Instance List-->
+    <navigation-rule>
+        <from-view-id>/cms/browse/RootTermInstanceList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ChildTermList</from-outcome>
+            <to-view-id>/cms/browse/ChildTermList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>pts</name>  
+                    <value>#{rootTermInstanceList.selectedTermInstance['termSlug']}</value>  
+                </view-param>
+                <view-param>  
+                    <name>ptis</name>  
+                    <value>#{rootTermInstanceList.selectedTermInstance['termInstanceSlug']}</value>  
+                </view-param>                  
+            </redirect>  
+        </navigation-case>
+          <!--    Browse from child term instance list in case there is only one term meta as child-->
+        <navigation-case>
+            <from-outcome>ChildTermInstanceList</from-outcome>
+            <to-view-id>/cms/browse/ChildTermInstanceList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>pts</name>  
+                    <value>#{rootTermInstanceList.parentTermSlug}</value>  
+                </view-param>
+                <view-param>  
+                    <name>ptis</name>  
+                    <value>#{rootTermInstanceList.parentTermInstanceSlug}</value>  
+                </view-param>      
+                <view-param>  
+                    <name>cts</name>  
+                    <value>#{rootTermInstanceList.childTermSlug}</value>  
+                </view-param>
+                <view-param>  
+                    <name>ctmk</name>  
+                    <value>#{rootTermInstanceList.childTermMetaKey}</value>  
+                </view-param>
+                                           
+            </redirect>  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>RootTermList</from-outcome>
+            <to-view-id>/cms/browse/RootTermList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                
+            </redirect>  
+        </navigation-case>        
+    </navigation-rule>
+    <!--    Navigation cases for Child Term List-->
+    <navigation-rule>
+        <from-view-id>/cms/browse/ChildTermList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ChildTermInstanceList</from-outcome>
+
+            <to-view-id>/cms/browse/ChildTermInstanceList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>pts</name>  
+                    <value>#{childTermList.parentTermSlug}</value>  
+                </view-param>
+                <view-param>  
+                    <name>ptis</name>  
+                    <value>#{childTermList.parentTermInstanceSlug}</value>  
+                </view-param>      
+                <view-param>  
+                    <name>cts</name>  
+                    <value>#{childTermList.selectedTermMeta['termSlug']}</value>  
+                </view-param>
+                <view-param>  
+                    <name>ctmk</name>  
+                    <value>#{childTermList.selectedTermMeta['metaKey']}</value>  
+                </view-param>
+                                           
+            </redirect>  
+        </navigation-case>
+
+
+        <!--    Back from Child term list in case parent term is root-->        
+        <navigation-case>
+            <from-outcome>RootTermInstanceList</from-outcome>
+            <to-view-id>/cms/browse/RootTermInstanceList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{childTermList.parentTermSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>
+    </navigation-rule>
+
+    
+    
+    <!--    Navigation cases for Child Term Instance List-->
+    <navigation-rule>
+        <from-view-id>/cms/browse/ChildTermInstanceList.xhtml</from-view-id>
+        <!--    Browse from child term instance list-->
+        <navigation-case>
+            <from-outcome>ChildTermList</from-outcome>
+            <to-view-id>/cms/browse/ChildTermList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>pts</name>  
+                    <value>#{childTermInstanceList.selectedTermInstance['termSlug']}</value>  
+                </view-param>
+                <view-param>  
+                    <name>ptis</name>  
+                    <value>#{childTermInstanceList.selectedTermInstance['termInstanceSlug']}</value>  
+                </view-param>
+            </redirect>  
+        </navigation-case>
+        <!--    Browse from child term instance list in case there is only one term meta as child-->
+        <navigation-case>
+            <from-outcome>ChildTermInstanceList</from-outcome>
+            <to-view-id>/cms/browse/ChildTermInstanceList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>pts</name>  
+                    <value>#{childTermInstanceList.parentTermSlug}</value>  
+                </view-param>
+                <view-param>  
+                    <name>ptis</name>  
+                    <value>#{childTermInstanceList.parentTermInstanceSlug}</value>  
+                </view-param>      
+                <view-param>  
+                    <name>cts</name>  
+                    <value>#{childTermInstanceList.childTermSlug}</value>  
+                </view-param>
+                <view-param>  
+                    <name>ctmk</name>  
+                    <value>#{childTermInstanceList.childTermMetaKey}</value>  
+                </view-param>
+                                           
+            </redirect>  
+        </navigation-case>
+    </navigation-rule>    
+    <!--    Navigation cases for Term Maintenance-->
+    <!--    Navigation cases for Term List-->
+    <navigation-rule>
+        <from-view-id>/cms/Term/TermList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>TermAdd</from-outcome>
+            <to-view-id>/cms/Term/TermAdd.xhtml</to-view-id>
+            <redirect />  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermEdit</from-outcome>
+            <to-view-id>/cms/Term/TermEdit.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termList.selectedTerm['slug']}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermMetaList</from-outcome>
+            <to-view-id>/cms/TermMeta/TermMetaList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termList.selectedTerm['slug']}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermList</from-outcome>
+            <to-view-id>/cms/Term/TermList.xhtml</to-view-id>
+            <redirect />  
+        </navigation-case>
+    </navigation-rule>
+    <!--    Navigation cases for Term Add-->
+    <navigation-rule>
+        <from-view-id>/cms/Term/TermAdd.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>TermList</from-outcome>
+            <to-view-id>/cms/Term/TermList.xhtml</to-view-id>
+            <redirect />  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermAdd</from-outcome>
+            <to-view-id>/cms/Term/TermAdd.xhtml</to-view-id>
+            <redirect />  
+        </navigation-case>
+    </navigation-rule>
+        <!--    Navigation cases for Term Edit-->
+    <navigation-rule>
+        <from-view-id>/cms/Term/TermEdit.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>TermList</from-outcome>
+            <to-view-id>/cms/Term/TermList.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermEdit</from-outcome>
+            <to-view-id>/cms/Term/TermEdit.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termEdit.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+    </navigation-rule>
+        <!--    Navigation cases for Term Meta Maintenance-->
+    <!--    Navigation cases for Term Meta List-->
+    <navigation-rule>
+        <from-view-id>/cms/TermMeta/TermMetaList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>TermMetaAdd</from-outcome>
+            <to-view-id>/cms/TermMeta/TermMetaAdd.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termMetaList.termSlug}</value>  
+                </view-param> 
+            </redirect>  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermMetaOrg</from-outcome>
+            <to-view-id>/cms/TermMeta/TermMetaOrg.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termMetaList.termSlug}</value>  
+                </view-param> 
+            </redirect>  
+        </navigation-case>        
+        <navigation-case>
+            <from-outcome>TermList</from-outcome>
+            <to-view-id>/cms/Term/TermList.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>        
+        <navigation-case>
+            <from-outcome>TermMetaEdit</from-outcome>
+            <to-view-id>/cms/TermMeta/TermMetaEdit.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>metakey</name>  
+                    <value>#{termMetaList.selectedMeta['metaKey']}</value>  
+                </view-param>
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termMetaList.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermMetaList</from-outcome>
+            <to-view-id>/cms/TermMeta/TermMetaList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termMetaList.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermList</from-outcome>
+            <to-view-id>/cms/Term/TermList.xhtml</to-view-id>
+            <redirect />  
+        </navigation-case>                       
+    </navigation-rule>
+        <!--    Navigation cases for Term Meta Add-->
+    <navigation-rule>
+        <from-view-id>/cms/TermMeta/TermMetaAdd.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>TermMetaList</from-outcome>
+            <to-view-id>/cms/TermMeta/TermMetaList.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termMetaAdd.termSlug}</value>  
+                </view-param>                 
+                
+            </redirect>  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermMetaAdd</from-outcome>
+            <to-view-id>/cms/TermMeta/TermMetaAdd.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termMetaAdd.termSlug}</value>  
+                </view-param>                 
+            </redirect>  
+        </navigation-case>
+    </navigation-rule>
+    <!--    Navigation cases for Term Meta Re Order-->
+    <navigation-rule>
+        <from-view-id>/cms/TermMeta/TermMetaOrg.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>TermMetaList</from-outcome>
+            <to-view-id>/cms/TermMeta/TermMetaList.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termMetaOrg.termSlug}</value>  
+                </view-param>                 
+                
+            </redirect>  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermMetaOrg</from-outcome>
+            <to-view-id>/cms/TermMeta/TermMetaOrg.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termMetaOrg.termSlug}</value>  
+                </view-param>                 
+            </redirect>  
+        </navigation-case>
+    </navigation-rule>    
+    <!--    Navigation cases for Term Meta Edit-->
+    <navigation-rule>
+        <from-view-id>/cms/TermMeta/TermMetaEdit.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>TermMetaList</from-outcome>
+            <to-view-id>/cms/TermMeta/TermMetaList.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termMetaEdit.termSlug}</value>  
+                </view-param>                 
+            </redirect>  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermEdit</from-outcome>
+            <to-view-id>/cms/Term/TermEdit.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termEdit.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+    </navigation-rule>
+    <!--    Navigation cases for Generic TermInstances-->
+    <!--    Navigation cases for TermInstance List-->
+    <navigation-rule>
+        <from-view-id>/cms/TermInstance/TermInstanceList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>TermInstanceAdd</from-outcome>
+            <to-view-id>/cms/TermInstance/TermInstanceAdd.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termInstanceList.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermInstanceEdit</from-outcome>
+            <to-view-id>/cms/TermInstance/TermInstanceEdit.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termInstanceList.termSlug}</value>  
+                </view-param>  
+                <view-param>  
+                    <name>terminstanceslug</name>  
+                    <value>#{termInstanceList.selectedMetaData['termInstanceSlug']}</value>  
+                </view-param>                 
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermInstanceList</from-outcome>
+            <to-view-id>/cms/TermInstance/TermInstanceList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termInstanceList.termSlug}</value>  
+                </view-param>                 
+            </redirect>
+        </navigation-case>        
+    </navigation-rule>
+        <!--    Navigation cases for TermInstance Add-->
+    <navigation-rule>
+        <from-view-id>/cms/TermInstance/TermInstanceAdd.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>TermInstanceList</from-outcome>
+            <to-view-id>/cms/TermInstance/TermInstanceList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termInstanceAdd.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermInstanceAdd</from-outcome>
+            <to-view-id>/cms/TermInstance/TermInstanceAdd.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termInstanceAdd.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+    </navigation-rule>
+    <!--    Navigation cases for TermInstance Edit-->
+    <navigation-rule>
+        <from-view-id>/cms/TermInstance/TermInstanceEdit.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>TermInstanceList</from-outcome>
+            <to-view-id>/cms/TermInstance/TermInstanceList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termInstanceEdit.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>TermInstanceEdit</from-outcome>
+            <to-view-id>/cms/TermInstance/TermInstanceEdit.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{termInstanceEdit.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+    </navigation-rule>
+    <!--    Navigation cases for Menu Maintenance-->
+    <!--    Navigation cases for Menu List-->
+    <navigation-rule>
+        <from-view-id>/cms/Menu/MenuList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MenuAdd</from-outcome>
+            <to-view-id>/cms/Menu/MenuAdd.xhtml</to-view-id>
+            <redirect />  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>MenuEdit</from-outcome>
+            <to-view-id>/cms/Menu/MenuEdit.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>id</name>  
+                    <value>#{menuList.selectedMenu['id']}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>MenuList</from-outcome>
+            <to-view-id>/cms/Menu/MenuList.xhtml</to-view-id>
+            <redirect />  
+        </navigation-case>                       
+    </navigation-rule>
+    <!--    Navigation cases for Menu Add-->
+    <navigation-rule>
+        <from-view-id>/cms/Menu/MenuAdd.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MenuList</from-outcome>
+            <to-view-id>/cms/Menu/MenuList.xhtml</to-view-id>
+            <redirect />  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>MenuAdd</from-outcome>
+            <to-view-id>/cms/Menu/MenuAdd.xhtml</to-view-id>
+            <redirect />  
+        </navigation-case>
+    </navigation-rule>
+    <!--    Navigation cases for Menu Edit-->
+    <navigation-rule>
+        <from-view-id>/cms/Menu/MenuEdit.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MenuList</from-outcome>
+            <to-view-id>/cms/Menu/MenuList.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>MenuEdit</from-outcome>
+            <to-view-id>/cms/Menu/MenuEdit.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>id</name>  
+                    <value>#{menuEdit.menuId}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+    </navigation-rule> 
+    <!--    Navigation cases for Media List-->
+    <navigation-rule>
+        <from-view-id>/cms/Media/MediaList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MediaAdd</from-outcome>
+            <to-view-id>/cms/Media/MediaAdd.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mediaList.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>MediaList</from-outcome>
+            <to-view-id>/cms/Media/MediaList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mediaList.termSlug}</value>  
+                </view-param>                 
+            </redirect>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>MediaEdit</from-outcome>
+            <to-view-id>/cms/Media/MediaEdit.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mediaList.termSlug}</value>  
+                </view-param>  
+                <view-param>  
+                    <name>terminstanceslug</name>  
+                    <value>#{mediaList.selectedMetaData['termInstanceSlug']}</value>  
+                </view-param>                 
+            </redirect> 
+        </navigation-case>
+    </navigation-rule>
+    <!--    Navigation cases for Media Add-->
+    <navigation-rule>
+        <from-view-id>/cms/Media/MediaAdd.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MediaList</from-outcome>
+            <to-view-id>/cms/Media/MediaList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mediaAdd.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>MediaAdd</from-outcome>
+            <to-view-id>/cms/Media/MediaAdd.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mediaAdd.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+    </navigation-rule>
+    <!--    Navigation cases for Media Edit-->
+    <navigation-rule>  
+        <from-view-id>/cms/Media/MediaEdit.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MediaList</from-outcome>
+            <to-view-id>/cms/Media/MediaList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mediaEdit.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>MediaEdit</from-outcome>
+            <to-view-id>/cms/Media/MediaEdit.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mediaEdit.termSlug}</value>  
+                </view-param>  
+            </redirect> 
+        </navigation-case>
+    </navigation-rule>        
+<!--    Navigation cases for Dataseries-->
+    <!--    Navigation cases for Dataseries List-->
+    <navigation-rule>
+        <from-view-id>/cms/DataSeries/DataSeriesList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>DataSeriesAdd</from-outcome>
+            <to-view-id>/cms/DataSeries/DataSeriesAdd.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{dataSeriesList.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>DataSeriesList</from-outcome>
+            <to-view-id>/cms/DataSeries/DataSeriesList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{dataSeriesList.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>DataSeriesView</from-outcome>
+            
+            <to-view-id>/cms/DataSeries/DataSeriesView.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{dataSeriesList.termSlug}</value>
+                </view-param> 
+                <view-param>        
+                    <name>cumulative</name>  
+                    <value>#{dataSeriesList.viewCumulative}</value>
+                </view-param> 
+                <view-param>     
+                    <name>terminstanceslug</name>  
+                    <value>#{dataSeriesList.selectedMetaData['termInstanceSlug']}</value>                                         
+                </view-param> 
+            </redirect>  
+        </navigation-case>         
+    </navigation-rule>
+    <!--    Navigation cases for Dataseries Add-->
+    <navigation-rule>
+        <from-view-id>/cms/DataSeries/DataSeriesAdd.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>DataSeriesList</from-outcome>
+            <to-view-id>/cms/DataSeries/DataSeriesList.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>
+                    <param-name>termslug</param-name>
+                    <param-value>#{dataSeriesAdd.termSlug}</param-value>
+                </view-param>
+            </redirect>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>DataSeriesAdd</from-outcome>
+            <to-view-id>/cms/DataSeries/DataSeriesAdd.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>
+                    <param-name>termslug</param-name>
+                    <param-value>#{dataSeriesAdd.termSlug}</param-value>
+                </view-param>
+            </redirect>
+        </navigation-case>            
+    </navigation-rule>
+    <!--    Navigation cases for Dataseries View-->
+    <navigation-rule>
+        <from-view-id>/cms/DataSeries/DataSeriesView.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>DataSeriesList</from-outcome>
+            <to-view-id>/cms/DataSeries/DataSeriesList.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <view-param>
+                    <param-name>termslug</param-name>
+                    <param-value>#{dataSeriesView.termSlug}</param-value>
+                </view-param>
+            </redirect>
+        </navigation-case>  
+    </navigation-rule>
+    
+    <!--    Navigation cases for Dataseries MFDFA Calculation-->
+    <!--    Navigation cases for Dataseries MFDFA Calculation List-->
+    <navigation-rule>
+        <from-view-id>/cms/MFDFA/MFDFACalcList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MFDFACalc</from-outcome>
+            <to-view-id>/cms/MFDFA/MFDFACalc.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mfdfaList.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>MFDFAResult</from-outcome>
+            <to-view-id>/cms/MFDFA/MFDFAResult.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mfdfaList.termSlug}</value>  
+                </view-param> 
+                <view-param>  
+                    <name>terminstanceslug</name>  
+                    <value>#{mfdfaList.selectedMetaData['termInstanceSlug']}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>MFDFACalcList</from-outcome>
+            <to-view-id>/cms/MFDFA/MFDFACalcList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mfdfaList.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>        
+    </navigation-rule>
+    <!--    Navigation cases for MFDFA Calculation Result-->
+    <navigation-rule>
+        <from-view-id>/cms/MFDFA/MFDFAResult.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MFDFACalcList</from-outcome>
+            <to-view-id>/cms/MFDFA/MFDFACalcList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mfdfaResult.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>MFDFAResultChart</from-outcome>
+            <to-view-id>/cms/MFDFA/MFDFAResultChart.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mfdfaResult.termSlug}</value>  
+                </view-param>  
+                <view-param>  
+                    <name>terminstanceslug</name>  
+                    <value>#{mfdfaResult.termInstanceSlug}</value>  
+                </view-param>   
+            </redirect>  
+        </navigation-case>     
+        <navigation-case>
+            <from-outcome>MFDFAResultDetails</from-outcome>
+            <to-view-id>/cms/MFDFA/MFDFAResultDetails.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mfdfaResult.termSlug}</value>  
+                </view-param>  
+                <view-param>  
+                    <name>terminstanceslug</name>  
+                    <value>#{mfdfaResult.termInstanceSlug}</value>  
+                </view-param>                 
+            </redirect>  
+        </navigation-case>                     
+    </navigation-rule>
+    <!--    Navigation cases for MFDFA Calculation Result Details-->
+    <navigation-rule>
+        <from-view-id>/cms/MFDFA/MFDFAResultDetails.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MFDFAResult</from-outcome>
+            <to-view-id>/cms/MFDFA/MFDFAResult.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mfdfaResultDetails.termSlug}</value>  
+                </view-param>  
+                <view-param>  
+                    <name>terminstanceslug</name>  
+                    <value>#{mfdfaResultDetails.termInstanceSlug}</value>  
+                </view-param>                 
+            </redirect>  
+        </navigation-case>   
+    </navigation-rule>
+    <!--    Navigation cases for MFDFA Calculation Result Details-->
+    <navigation-rule>
+        <from-view-id>/cms/MFDFA/MFDFAResultChart.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MFDFAResult</from-outcome>
+            <to-view-id>/cms/MFDFA/MFDFAResult.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mfdfaResultChart.termSlug}</value>  
+                </view-param>  
+                <view-param>  
+                    <name>terminstanceslug</name>  
+                    <value>#{mfdfaResultChart.termInstanceSlug}</value>  
+                </view-param>                 
+            </redirect>  
+        </navigation-case>   
+    </navigation-rule>    
+    <!--    Navigation cases for  MFDFA Calculation processing-->
+    <navigation-rule>
+        <from-view-id>/cms/MFDFA/MFDFACalc.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>MFDFACalcList</from-outcome>
+            <to-view-id>/cms/MFDFA/MFDFACalcList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mfdfaCalc.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>   
+        <navigation-case>
+            <from-outcome>MFDFACalc</from-outcome>
+            <to-view-id>/cms/MFDFA/MFDFACalc.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{mfdfaCalc.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>                 
+    </navigation-rule>    
+    <!--    Navigation cases for Speech Emo Calculation-->
+    <!--    Navigation cases for Speech Emo Calculation List-->
+    <navigation-rule>
+        <from-view-id>/cms/Speech/SpeechEmoList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>SpeechEmoCalc</from-outcome>
+            <to-view-id>/cms/Speech/SpeechEmoCalc.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{speechEmoList.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>SpeechEmoList</from-outcome>
+            <to-view-id>/cms/Speech/SpeechEmoList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{speechEmoList.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case> 
+        
+        <navigation-case>
+            <from-outcome>SpeechEmoResult</from-outcome>
+            <to-view-id>/cms/Speech/SpeechEmoResult.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{speechEmoList.termSlug}</value>  
+                </view-param>
+                <view-param>  
+                    <name>terminstanceslug</name>  
+                    <value>#{speechEmoList.selectedMetaData['termInstanceSlug']}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>       
+    </navigation-rule> 
+    <!--    Navigation cases for Speech Emo Calculation List-->
+    <navigation-rule>
+        <from-view-id>/cms/Speech/SpeechEmoCalc.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>SpeechEmoList</from-outcome>
+            <to-view-id>/cms/Speech/SpeechEmoList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{speechEmoCalc.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>   
+        <navigation-case>
+            <from-outcome>SpeechEmoCalc</from-outcome>
+            <to-view-id>/cms/Speech/SpeechEmoCalc.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{speechEmoCalc.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>                 
+    </navigation-rule>
+    
+    <!--    Navigation cases for Speech Emo Result-->
+    <navigation-rule>
+        <from-view-id>/cms/Speech/SpeechEmoResult.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>SpeechEmoList</from-outcome>
+            <to-view-id>/cms/Speech/SpeechEmoList.xhtml</to-view-id>
+            <redirect include-view-params="true">  
+                <view-param>  
+                    <name>termslug</name>  
+                    <value>#{speechEmoResult.termSlug}</value>  
+                </view-param>  
+            </redirect>  
+        </navigation-case>
+    </navigation-rule>
+</faces-config>

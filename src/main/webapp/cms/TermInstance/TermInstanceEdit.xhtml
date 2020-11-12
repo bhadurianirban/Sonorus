@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body>
+        <ui:composition template="/WEB-INF/template.xhtml">
+            <ui:define name="content">
+                <f:metadata>
+                    <f:viewParam name="termslug" value="#{termInstanceEdit.termSlug}"></f:viewParam>
+                    <f:viewParam name="terminstanceslug" value="#{termInstanceEdit.termInstanceSlug}"></f:viewParam>
+                    <f:viewAction action="#{termInstanceEdit.createMetaDataEditForm()}"/>
+                </f:metadata>
+                <div class="card">
+                    <h1>Edit #{termInstanceEdit.termName}</h1>
+                </div>
+                <h:form styleClass="instanceform"> 
+
+                    <p:growl autoUpdate="true"/>     
+                    <pe:fluidGrid id="fluidGrid" value="#{termInstanceEdit.formItems}" var="data"  
+                                  hGutter="20" widgetVar="fluidGridWdgt"> 
+                        <pe:fluidGridItem type="termslugfield">  
+                            <div class="dynaFormLabel">  
+                                <p:outputLabel for="termslugfieldid" value="#{data.label}"/>  
+                            </div>  
+                            <p:inputText id="termslugfieldid" value="#{data.value}" required="#{data.required}"  disabled="#{data.disabled}">
+                                
+                            </p:inputText>
+                        </pe:fluidGridItem>                        
+                        <pe:fluidGridItem type="textfield">  
+                            <div class="dynaFormLabel">  
+                                <p:outputLabel for="textfieldid" value="#{data.label}"/>  
+                            </div>  
+                            <p:inputText id="textfieldid" value="#{data.value}" required="#{data.required}" disabled="#{data.disabled}"/>  
+                        </pe:fluidGridItem>
+                        <pe:fluidGridItem type="textarea">  
+                            <div class="dynaFormLabel">  
+                                <p:outputLabel for="textareaid" value="#{data.label}"/>  
+                            </div>  
+                            <p:inputTextarea rows="5" cols="20" counter="display" maxlength="100" counterTemplate="{0} characters remaining." id="textareaid" value="#{data.value}" required="#{data.required}"/>  
+                            <h:outputText id="display" />
+                        </pe:fluidGridItem>  
+                        <pe:fluidGridItem type="number">  
+                            <div class="dynaFormLabel">  
+                                <p:outputLabel for="numberid" value="#{data.label}"/>  
+                            </div>  
+                            <p:inputNumber id="numberid" value="#{data.value}" required="#{data.required}">  
+
+                            </p:inputNumber>
+                        </pe:fluidGridItem>
+
+                        <pe:fluidGridItem type="date">  
+                            <div class="dynaFormLabel">  
+                                <p:outputLabel for="dateid" value="#{data.label}"/>  
+                            </div>  
+                            <p:calendar id="dateid" value="#{data.value}" required="#{data.required}" pattern="dd-MM-yyyy" converter="fieldDateConverter">
+
+                            </p:calendar>  
+                        </pe:fluidGridItem>
+                        <pe:fluidGridItem type="time">  
+                            <div class="dynaFormLabel">  
+                                <p:outputLabel for="timeid" value="#{data.label}"/>  
+                            </div>  
+                            <p:calendar id="timeid" value="#{data.value}" required="#{data.required}" pattern="HH:mm" timeOnly="true" converter="fieldTimeConverter" />  
+                        </pe:fluidGridItem>                           
+                        <pe:fluidGridItem type="selectone">  
+                            <div class="dynaFormLabel">  
+                                <p:outputLabel for="dropdownid" value="#{data.label}"/>  
+                            </div>  
+                            <p:selectOneMenu id="dropdownid" value="#{data.value}" required="#{data.required}">
+                                <f:selectItem itemValue="#{null}" itemLabel="None" />
+                                <f:selectItems value="#{data.selectItems}" />
+                            </p:selectOneMenu>
+                        </pe:fluidGridItem>
+                        <pe:fluidGridItem type="selectmany">  
+                            <div class="dynaFormLabel">  
+                                <p:outputLabel for="selectmanyid" value="#{data.label}"/>  
+                            </div>  
+                            <p:selectCheckboxMenu id="selectmanyid" label="#{data.label}" value="#{data.value}" required="#{data.required}" multiple="true">
+
+                                <f:selectItems value="#{data.selectItems}" />
+                            </p:selectCheckboxMenu>
+                        </pe:fluidGridItem>                          
+                        <pe:fluidGridItem type="boolean">  
+                            <div class="dynaFormLabel">  
+                                <p:outputLabel for="booleanid" value="#{data.label}"/>  
+                            </div>  
+                            <p:selectOneButton id="booleanid" value="#{data.value}" required="#{data.required}">
+                                <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                                <f:selectItem itemLabel="No" itemValue="No" />
+                            </p:selectOneButton>
+                        </pe:fluidGridItem>                        
+                        <pe:fluidGridItem type="parentselect">  
+                            <div class="dynaFormLabel">  
+                                <p:outputLabel for="parents" value="#{data.label}"/>  
+                            </div>  
+                            <p:selectOneMenu id="parents" value="#{data.value}" required="#{data.required}">
+
+                                <f:selectItems value="#{data.selectItems}" />
+                            </p:selectOneMenu>
+                        </pe:fluidGridItem>
+                    </pe:fluidGrid>
+                    <div class="card">
+                        <p:commandButton styleClass="button" style="margin-right: 3%" value="Save" action="#{termInstanceEdit.editTermInstance()}"></p:commandButton>
+                        <p:button styleClass="back-button" value="Back" outcome="TermInstanceList" />
+                    </div>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
