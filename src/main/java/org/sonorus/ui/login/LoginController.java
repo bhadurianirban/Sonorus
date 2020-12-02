@@ -204,9 +204,9 @@ public class LoginController implements Serializable {
         productName = sb.toString();
         productCaption = "Time you enjoy wasting is not wasted time.";
         selectedTheme = "css/term-blue.css";
-        homeScreenLogo = contextPath + "/faces/javax.faces.resource/term/images/default-butterfly.png";
-        iconAndLogo = contextPath + "/faces/javax.faces.resource/term/images/dgrflogo.png";
-        selectedHomeImg = contextPath + "/faces/javax.faces.resource/term/images/dgrf-default-home-img.jpg";
+        homeScreenLogo = contextPath + "/faces/javax.faces.resource/term/images/logo.png";
+        iconAndLogo = contextPath + "/faces/javax.faces.resource/term/images/logo.png";
+        selectedHomeImg = contextPath + "/faces/javax.faces.resource/term/images/default-home-img.jpg";
         setAuthCredentials();
         CMSClientService mts = new CMSClientService();
 
