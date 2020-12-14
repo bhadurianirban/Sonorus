@@ -13,16 +13,16 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 
-import org.hedwig.cms.constants.CMSConstants;
+import org.hedwig.leviosa.constants.CMSConstants;
 import org.hedwig.cms.dto.TermDTO;
 import org.hedwig.cms.dto.TermInstanceDTO;
 import org.hedwig.cms.dto.TermMetaDTO;
 import org.sonorus.ui.login.CMSClientAuthCredentialValue;
 import org.sonorus.ui.terminstance.TermInstanceUtil;
 import org.sonorus.ui.terminstance.TermMetaKeyLabels;
-import org.leviosa.core.driver.CMSClientService;
-import org.patronus.fractal.response.FractalResponseCode;
-import org.patronus.fractal.response.FractalResponseMessage;
+import org.leviosa.core.driver.LeviosaClientService;
+import org.patronus.response.FractalResponseCode;
+import org.patronus.response.FractalResponseMessage;
 import org.sonorus.core.client.SonorusCoreClient;
 import org.sonorus.core.dto.SonorusDTO;
 
@@ -52,10 +52,10 @@ public class SpeechEmoList implements Serializable {
 
     public void fillTermMetaData() {
 
-        CMSClientService cmscs = new CMSClientService();
+        LeviosaClientService cmscs = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
 
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO.setTermSlug(termSlug);
         termDTO = cmscs.getTermDetails(termDTO);
 
@@ -63,14 +63,14 @@ public class SpeechEmoList implements Serializable {
 
         //Creation of grid
         TermMetaDTO termMetaDTO = new TermMetaDTO();
-        termMetaDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termMetaDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termMetaDTO.setTermSlug(termSlug);
         termMetaDTO = cmscs.getTermMetaList(termMetaDTO);
 
         List<Map<String, Object>> termScreenFields = termMetaDTO.getTermMetaFields();
 
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termInstanceDTO.setTermSlug(termSlug);
         termInstanceDTO = cmscs.getTermInstanceList(termInstanceDTO);
 
@@ -92,7 +92,7 @@ public class SpeechEmoList implements Serializable {
         FractalResponseMessage responseMessage = new FractalResponseMessage();
         
         SonorusDTO dGRFSpeechDTO = new SonorusDTO();
-        dGRFSpeechDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        dGRFSpeechDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         dGRFSpeechDTO.setSpeechEmoTermInstance(selectedMetaData);
         
         SonorusCoreClient dgrfscc = new SonorusCoreClient();

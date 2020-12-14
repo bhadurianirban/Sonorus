@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.leviosa.core.driver.CMSClientService;
-import org.hedwig.cms.constants.CMSConstants;
+import org.leviosa.core.driver.LeviosaClientService;
+import org.hedwig.leviosa.constants.CMSConstants;
 import org.hedwig.cms.dto.TermDTO;
 import org.hedwig.cms.dto.TermInstanceDTO;
 import org.sonorus.ui.login.CMSClientAuthCredentialValue;
-import org.patronus.fractal.core.client.FractalCoreClient;
-import org.patronus.fractal.core.dto.DataSeriesDTO;
-import org.patronus.fractal.constants.FractalConstants;
-import org.patronus.fractal.core.dto.FractalDTO;
+import org.patronus.core.client.PatronusCoreClient;
+import org.patronus.core.dto.DataSeriesDTO;
+import org.patronus.constants.PatronusConstants;
+import org.patronus.core.dto.FractalDTO;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.LineChartModel;
@@ -47,16 +47,16 @@ public class DataSeriesView implements Serializable {
     }
 
     public void getDataSeriesData() {
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
 
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO.setTermSlug(termSlug);
         termDTO = mts.getTermDetails(termDTO);
 
         termName = (String) termDTO.getTermDetails().get(CMSConstants.TERM_NAME);
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termInstanceDTO.setTermSlug(termSlug);
         termInstanceDTO.setTermInstanceSlug(termInstanceSlug);
         termInstanceDTO = mts.getTermInstance(termInstanceDTO);
@@ -65,9 +65,9 @@ public class DataSeriesView implements Serializable {
         int dataSeriesType = Integer.parseInt((String) screenTermInstance.get("type"));
         String dataSeriesSlug = (String)screenTermInstance.get(CMSConstants.TERM_INSTANCE_SLUG);
         FractalDTO fractalDTO = new FractalDTO();
-        fractalDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        fractalDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         fractalDTO.setDataSeriesSlug(dataSeriesSlug);
-        FractalCoreClient dss = new FractalCoreClient();
+        PatronusCoreClient dss = new PatronusCoreClient();
         fractalDTO = dss.getDataseries(fractalDTO);
         List<DataSeriesDTO> dataseriesList  = fractalDTO.getDataseriesDTOList();
 
@@ -89,7 +89,7 @@ public class DataSeriesView implements Serializable {
         Double yvalue;
         Double yCumValue;
         Double xvalue;
-        if (dataSeriesType == FractalConstants.XY_SERIES) {
+        if (dataSeriesType == PatronusConstants.XY_SERIES) {
             Double minXValue = dataseriesList.stream().min(Comparator.comparing(d -> d.getXvalue())).get().getXvalue();
             Double maxXValue = dataseriesList.stream().max(Comparator.comparing(d -> d.getXvalue())).get().getXvalue();
             xAxis.setMin(minXValue);

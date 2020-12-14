@@ -11,7 +11,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import org.leviosa.core.client.MenuClient;
-import org.leviosa.core.driver.CMSClientService;
+import org.leviosa.core.driver.LeviosaClientService;
 import org.hedwig.cms.dto.MenuDTO;
 import org.hedwig.cms.dto.MenuNode;
 import org.primefaces.model.menu.DefaultMenuItem;
@@ -31,7 +31,6 @@ import org.primefaces.model.menu.MenuModel;
 public class MenuController {
 
     private MenuModel menuModel;
-    private CMSClientService ms;
     /**
      * Creates a new instance of MenuController
      */
@@ -48,13 +47,13 @@ public class MenuController {
         } else {
             menuModel = new DefaultMenuModel();
             MenuDTO menuDTO = new MenuDTO();
-            menuDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+            menuDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
             MenuClient menuListGet = new MenuClient();
             menuDTO = menuListGet.getMenuTree(menuDTO);
             MenuNode authorisedMenuRoot = menuDTO.getRootMenuNode();
             List<MenuNode> rootMenuForest = authorisedMenuRoot.getChildren();
             DefaultSubMenu rootMenu = new DefaultSubMenu("User Menu");
-            ms = new CMSClientService();
+            //LeviosaClientService ms = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
             buildMultiMenu(rootMenuForest, rootMenu);
             List<MenuElement> userMenuList = rootMenu.getElements();
             for (MenuElement userMenu : userMenuList) {

@@ -12,11 +12,11 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.hedwig.cloud.response.HedwigResponseMessage;
-import org.hedwig.cms.constants.CMSConstants;
+import org.hedwig.leviosa.constants.CMSConstants;
 import org.hedwig.cms.dto.TermDTO;
 import org.hedwig.cms.dto.TermInstanceDTO;
 import org.hedwig.cms.dto.TermMetaDTO;
-import org.leviosa.core.driver.CMSClientService;
+import org.leviosa.core.driver.LeviosaClientService;
 import org.sonorus.ui.login.CMSClientAuthCredentialValue;
 
 /**
@@ -38,17 +38,17 @@ public class MediaEdit implements Serializable {
     }
 
     public void createMetaDataEditForm() {
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
 
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO.setTermSlug(termSlug);
         termDTO = mts.getTermDetails(termDTO);
         termName = (String)termDTO.getTermDetails().get(CMSConstants.TERM_NAME);
         
         //Get screen data
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         
         termInstanceDTO.setTermSlug(termSlug);
         termInstanceDTO.setTermInstanceSlug(termInstanceSlug);
@@ -57,7 +57,7 @@ public class MediaEdit implements Serializable {
         
         //Get screen fields
         TermMetaDTO termMetaDTO = new TermMetaDTO();
-        termMetaDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termMetaDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termMetaDTO.setTermSlug(termSlug);
         termMetaDTO = mts.getTermMetaList(termMetaDTO);
         //termScreenFields = termMetaDTO.getTermMetaFields();
@@ -68,14 +68,14 @@ public class MediaEdit implements Serializable {
     public String editTermInstance() {
         FacesMessage message;
         String termMetaKey;
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
 
             
             
 
 
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termInstanceDTO.setTermInstance(screenTermInstance);
         termInstanceDTO = mts.saveTermInstance(termInstanceDTO);
         if (termInstanceDTO.getResponseCode() != 0) {

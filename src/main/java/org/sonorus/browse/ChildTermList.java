@@ -11,8 +11,8 @@ import java.util.Map;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.hedwig.cloud.response.HedwigResponseCode;
-import org.hedwig.cms.constants.CMSConstants;
-import org.leviosa.core.driver.CMSClientService;
+import org.hedwig.leviosa.constants.CMSConstants;
+import org.leviosa.core.driver.LeviosaClientService;
 import org.hedwig.cms.dto.TermDTO;
 import org.hedwig.cms.dto.TermInstanceDTO;
 import org.hedwig.cms.dto.TermMetaDTO;
@@ -44,10 +44,10 @@ public class ChildTermList implements Serializable{
     }
     public void fillTermList() {
 
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
         //Creation of the grid
         TermMetaDTO termMetaDTO = new TermMetaDTO();
-        termMetaDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termMetaDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termMetaDTO.setTermSlug(parentTermSlug);
         termMetaDTO = mts.getChildTermMetaList(termMetaDTO);
 
@@ -58,13 +58,13 @@ public class ChildTermList implements Serializable{
         //get the following for the header line
         //get parent term name
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO.setTermSlug(parentTermSlug);
         termDTO = mts.getTermDetails(termDTO);
         parentTermName = (String)termDTO.getTermDetails().get(CMSConstants.TERM_NAME);
         //get parent term instance name
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termInstanceDTO.setTermSlug(parentTermSlug);
         termInstanceDTO.setTermInstanceSlug(parentTermInstanceSlug);
         termInstanceDTO = mts.getTermInstance(termInstanceDTO);

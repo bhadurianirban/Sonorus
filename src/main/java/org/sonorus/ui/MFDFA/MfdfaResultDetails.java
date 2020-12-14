@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.leviosa.core.driver.CMSClientService;
-import org.hedwig.cms.constants.CMSConstants;
+import org.leviosa.core.driver.LeviosaClientService;
+import org.hedwig.leviosa.constants.CMSConstants;
 import org.hedwig.cms.dto.TermDTO;
 import org.hedwig.cms.dto.TermInstanceDTO;
-import org.patronus.fractal.core.client.FractalCoreClient;
-import org.patronus.fractal.core.dto.FractalDTO;
-import org.patronus.fractal.core.dto.MFDFAResultDTO;
+import org.patronus.core.client.PatronusCoreClient;
+import org.patronus.core.dto.FractalDTO;
+import org.patronus.core.dto.MFDFAResultDTO;
 import org.sonorus.ui.login.CMSClientAuthCredentialValue;
 
 /**
@@ -40,17 +40,17 @@ public class MfdfaResultDetails implements Serializable {
     }
 
     public void getMfdfaResultData() {
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
 
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO.setTermSlug(termSlug);
         termDTO = mts.getTermDetails(termDTO);
 
         termName = (String) termDTO.getTermDetails().get(CMSConstants.TERM_NAME);
 
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         
         termInstanceDTO.setTermSlug(termSlug);
         termInstanceDTO.setTermInstanceSlug(termInstanceSlug);
@@ -60,9 +60,9 @@ termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS
         mfdfaResultInstance = termInstanceDTO.getTermInstance();
 
         FractalDTO fractalDTO = new FractalDTO();
-        fractalDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        fractalDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         fractalDTO.setFractalTermInstance(mfdfaResultInstance);
-        FractalCoreClient fractalCoreClient = new FractalCoreClient();
+        PatronusCoreClient fractalCoreClient = new PatronusCoreClient();
         
         fractalDTO = fractalCoreClient.getMfdfaResults(fractalDTO);
         mfdfaResultsList = fractalDTO.getMfdfaResultDTOs();

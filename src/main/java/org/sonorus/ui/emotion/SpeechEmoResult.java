@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.Map;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.leviosa.core.driver.CMSClientService;
-import org.hedwig.cms.constants.CMSConstants;
+import org.leviosa.core.driver.LeviosaClientService;
+import org.hedwig.leviosa.constants.CMSConstants;
 import org.hedwig.cms.dto.TermDTO;
 import org.hedwig.cms.dto.TermInstanceDTO;
 import org.hedwig.cms.dto.TermMetaDTO;
@@ -38,18 +38,18 @@ public class SpeechEmoResult implements Serializable {
     }
 
     public void getSpeechEmoResultData() {
-        CMSClientService cmscs = new CMSClientService();
+        LeviosaClientService cmscs = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
         
         //get term name
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO.setTermSlug(termSlug);
         termDTO = cmscs.getTermDetails(termDTO);
         termName = (String) termDTO.getTermDetails().get(CMSConstants.TERM_NAME);
 
         //get mfdfa result term instance
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termInstanceDTO.setTermSlug(termSlug);
         termInstanceDTO.setTermInstanceSlug(termInstanceSlug);
         termInstanceDTO = cmscs.getTermInstance(termInstanceDTO);
@@ -57,7 +57,7 @@ public class SpeechEmoResult implements Serializable {
 
         //get mfdfa field labels 
         TermMetaDTO termMetaDTO = new TermMetaDTO();
-        termMetaDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termMetaDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termMetaDTO.setTermSlug(termSlug);
         termMetaDTO = cmscs.getTermMetaList(termMetaDTO);
         termScreenFieldsDesc = termMetaDTO.getTermMetaFieldLabels();

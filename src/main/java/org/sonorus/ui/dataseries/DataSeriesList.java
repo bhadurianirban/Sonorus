@@ -13,16 +13,16 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.patronus.fractal.response.FractalResponseCode;
+import org.patronus.response.FractalResponseCode;
 import org.hedwig.cloud.response.HedwigResponseMessage;
-import org.hedwig.cms.constants.CMSConstants;
-import org.leviosa.core.driver.CMSClientService;
+import org.hedwig.leviosa.constants.CMSConstants;
+import org.leviosa.core.driver.LeviosaClientService;
 import org.hedwig.cms.dto.TermDTO;
 import org.hedwig.cms.dto.TermInstanceDTO;
 import org.hedwig.cms.dto.TermMetaDTO;
 import org.sonorus.ui.login.CMSClientAuthCredentialValue;
-import org.patronus.fractal.core.client.FractalCoreClient;
-import org.patronus.fractal.core.dto.FractalDTO;
+import org.patronus.core.client.PatronusCoreClient;
+import org.patronus.core.dto.FractalDTO;
 
 
 
@@ -55,10 +55,10 @@ public class DataSeriesList implements Serializable {
 
     public void fillTermMetaData() {
 
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
 
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO.setTermSlug(termSlug);
         termDTO = mts.getTermDetails(termDTO);
 
@@ -66,7 +66,7 @@ public class DataSeriesList implements Serializable {
 
         //Creation of grid
         TermMetaDTO termMetaDTO = new TermMetaDTO();
-        termMetaDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termMetaDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termMetaDTO.setTermSlug(termSlug);
         termMetaDTO = mts.getTermMetaList(termMetaDTO);
         
@@ -74,7 +74,7 @@ public class DataSeriesList implements Serializable {
 
         //Creation of grid
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termInstanceDTO.setTermSlug(termSlug);
         termInstanceDTO = mts.getTermInstanceList(termInstanceDTO);
         
@@ -94,9 +94,9 @@ public class DataSeriesList implements Serializable {
 
     public String deleteDataSeries() {
         FacesMessage message;
-        FractalCoreClient mts = new FractalCoreClient();
+        PatronusCoreClient mts = new PatronusCoreClient();
         FractalDTO fractalDTO = new FractalDTO();
-        fractalDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        fractalDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         String selectedTermInstanceSlug = (String) selectedMetaData.get("termInstanceSlug");
         fractalDTO.setDataSeriesSlug(selectedTermInstanceSlug);
         //delete dataseries metadata

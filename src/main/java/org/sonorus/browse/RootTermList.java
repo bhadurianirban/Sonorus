@@ -35,7 +35,7 @@ public class RootTermList implements Serializable {
     public void fillTermList() {
         TermClient mts = new TermClient();
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO = mts.getRootTermList(termDTO);
         if (termDTO.getResponseCode() == HedwigResponseCode.SUCCESS) {
             termListInMap = termDTO.getTermList();

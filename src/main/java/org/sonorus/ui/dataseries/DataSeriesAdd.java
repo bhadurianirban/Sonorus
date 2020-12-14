@@ -19,20 +19,20 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.patronus.fractal.response.FractalResponseCode;
+import org.patronus.response.FractalResponseCode;
 
-import org.hedwig.cms.constants.CMSConstants;
-import org.leviosa.core.driver.CMSClientService;
+import org.hedwig.leviosa.constants.CMSConstants;
+import org.leviosa.core.driver.LeviosaClientService;
 import org.hedwig.cms.dto.TermDTO;
 import org.hedwig.cms.dto.TermMetaDTO;
 import org.sonorus.ui.login.CMSClientAuthCredentialValue;
 import org.sonorus.core.client.SonorusCoreClient;
 
 import org.sonorus.core.dto.SonorusDTO;
-import org.patronus.fractal.core.client.FractalCoreClient;
-import org.patronus.fractal.termmeta.DataSeriesMeta;
-import org.patronus.fractal.core.dto.FractalDTO;
-import org.patronus.fractal.response.FractalResponseMessage;
+import org.patronus.core.client.PatronusCoreClient;
+import org.patronus.termmeta.DataSeriesMeta;
+import org.patronus.core.dto.FractalDTO;
+import org.patronus.response.FractalResponseMessage;
 
 
 
@@ -62,25 +62,25 @@ public class DataSeriesAdd implements Serializable {
     }
 
     public void creteTermForm() {
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
 
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO.setTermSlug(termSlug);
         termDTO = mts.getTermDetails(termDTO);
 
         termName = (String) termDTO.getTermDetails().get(CMSConstants.TERM_NAME);
         
         TermMetaDTO termMetaDTO = new TermMetaDTO();
-        termMetaDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termMetaDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termMetaDTO.setTermSlug(termSlug);
         termMetaDTO = mts.getTermMetaList(termMetaDTO);
         termScreenFields = termMetaDTO.getTermMetaFields();
 
         
-        FractalCoreClient fractalCoreClient = new  FractalCoreClient();
+        PatronusCoreClient fractalCoreClient = new  PatronusCoreClient();
         FractalDTO fractalDTO = new FractalDTO();
-        fractalDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        fractalDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         fractalDTO = fractalCoreClient.createDataSeriesTermInstance(fractalDTO);
         screenTermInstance = fractalDTO.getFractalTermInstance();
         
@@ -140,7 +140,7 @@ public class DataSeriesAdd implements Serializable {
         //convert wav to csv and upload to dataseries
         SonorusCoreClient dgrfscc = new SonorusCoreClient();
         SonorusDTO dGRFSpeechDTO = new SonorusDTO();
-        dGRFSpeechDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        dGRFSpeechDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         dGRFSpeechDTO.setWavFilePath(tempFilePath);
         dGRFSpeechDTO.setSpeechDataSeriesTermInstance(screenTermInstance);
         dGRFSpeechDTO = dgrfscc.convertWavToCsv(dGRFSpeechDTO);

@@ -13,17 +13,17 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.patronus.fractal.response.FractalResponseCode;
-import org.leviosa.core.driver.CMSClientService;
-import org.hedwig.cms.constants.CMSConstants;
+import org.patronus.response.FractalResponseCode;
+import org.leviosa.core.driver.LeviosaClientService;
+import org.hedwig.leviosa.constants.CMSConstants;
 import org.hedwig.cms.dto.TermDTO;
 import org.hedwig.cms.dto.TermInstanceDTO;
 import org.hedwig.cms.dto.TermMetaDTO;
-import org.patronus.fractal.core.client.FractalCoreClient;
-import org.patronus.fractal.termmeta.DataSeriesMeta;
-import org.patronus.fractal.constants.FractalConstants;
-import org.patronus.fractal.core.dto.FractalDTO;
-import org.patronus.fractal.termmeta.MFDFAResultsMeta;
+import org.patronus.core.client.PatronusCoreClient;
+import org.patronus.termmeta.DataSeriesMeta;
+import org.patronus.constants.PatronusConstants;
+import org.patronus.core.dto.FractalDTO;
+import org.patronus.termmeta.MFDFAResultsMeta;
 import org.sonorus.ui.login.CMSClientAuthCredentialValue;
 
 /**
@@ -51,37 +51,37 @@ public class MfdfaCalc implements Serializable {
     }
 
     public void creteTermForm() {
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
         //get term name
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO.setTermSlug(termSlug);
         termDTO = mts.getTermDetails(termDTO);
         termName = (String) termDTO.getTermDetails().get(CMSConstants.TERM_NAME);
 
         //get mfdfa param field lables
         TermMetaDTO termMetaDTO = new TermMetaDTO();
-        termMetaDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
-        termMetaDTO.setTermSlug(FractalConstants.TERM_SLUG_MFDFA_PARAM);
+        termMetaDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termMetaDTO.setTermSlug(PatronusConstants.TERM_SLUG_MFDFA_PARAM);
         termMetaDTO = mts.getTermMetaList(termMetaDTO);
         mfdfaParamFieldsLabel = termMetaDTO.getTermMetaFieldLabels();
         //get dataseries field labels
 
-        termMetaDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
-        termMetaDTO.setTermSlug(FractalConstants.TERM_SLUG_DATASERIES);
+        termMetaDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termMetaDTO.setTermSlug(PatronusConstants.TERM_SLUG_DATASERIES);
         termMetaDTO = mts.getTermMetaList(termMetaDTO);
         dataSeriesFieldsLabel = termMetaDTO.getTermMetaFieldLabels();
 
         //get mfdfa param field data
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
 
-        termInstanceDTO.setTermSlug(FractalConstants.TERM_SLUG_MFDFA_PARAM);
+        termInstanceDTO.setTermSlug(PatronusConstants.TERM_SLUG_MFDFA_PARAM);
         termInstanceDTO = mts.getTermInstanceList(termInstanceDTO);
         mfdfaParamDataList = termInstanceDTO.getTermInstanceList();
 
         //get dataseries field list
-        termInstanceDTO.setTermSlug(FractalConstants.TERM_SLUG_DATASERIES);
+        termInstanceDTO.setTermSlug(PatronusConstants.TERM_SLUG_DATASERIES);
         termInstanceDTO = mts.getTermInstanceList(termInstanceDTO);
         if (termInstanceDTO.getResponseCode() == FractalResponseCode.SUCCESS) {
             List<Map<String, Object>> dataSeriesListAll = termInstanceDTO.getTermInstanceList();
@@ -116,13 +116,13 @@ public class MfdfaCalc implements Serializable {
 
         Long dataCount = Long.parseLong((String) selectedDataSeries.get(DataSeriesMeta.DATA_SERIES_LENGTH));
 
-        FractalCoreClient fractalCoreClient = new FractalCoreClient();
+        PatronusCoreClient fractalCoreClient = new PatronusCoreClient();
         FractalDTO fractalDTO = new FractalDTO();
-        fractalDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        fractalDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         fractalDTO.setParamSlug(mfdfaParamSlug);
         fractalDTO.setDataSeriesSlug(dataSeriesSlug);
 
-        if (dataCount < FractalConstants.DATA_LIMIT) {
+        if (dataCount < PatronusConstants.DATA_LIMIT) {
             fractalDTO = fractalCoreClient.calculateMFDFA(fractalDTO);
             screenTermInstance = fractalDTO.getFractalTermInstance();
             if (screenTermInstance == null) {
@@ -148,7 +148,7 @@ public class MfdfaCalc implements Serializable {
 
         String queued = (String) screenTermInstance.get("queued");
         if (queued.equals("Yes")) {
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Data length is more than " + FractalConstants.DATA_LIMIT + ". Your data is queued for processing check after some time.");
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Data length is more than " + PatronusConstants.DATA_LIMIT + ". Your data is queued for processing check after some time.");
         } else {
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Hurst exponent:" + screenTermInstance.get(MFDFAResultsMeta.HURST_EXPONENT));
         }

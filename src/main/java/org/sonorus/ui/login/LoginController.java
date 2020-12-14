@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,12 +29,12 @@ import org.hedwig.cloud.dto.TenantDTO;
 import org.hedwig.cloud.dto.UserAuthDTO;
 import org.hedwig.cloud.client.UserAuthClient;
 import org.hedwig.cloud.response.HedwigResponseCode;
-import org.leviosa.core.driver.CMSClientService;
+import org.leviosa.core.driver.LeviosaClientService;
 import org.hedwig.cloud.dto.HedwigAuthCredentials;
-import org.hedwig.cms.constants.AppearenceMeta;
-import org.hedwig.cms.constants.CMSConstants;
+import org.hedwig.leviosa.constants.AppearenceMeta;
+import org.hedwig.leviosa.constants.CMSConstants;
 import org.hedwig.cms.dto.TermInstanceDTO;
-import org.hedwig.cms.constants.MediaMeta;
+import org.hedwig.leviosa.constants.MediaMeta;
 
 /**
  *
@@ -60,7 +61,8 @@ public class LoginController implements Serializable {
     private String iconAndLogo;
 
     private Map<String, Object> tenantMap;
-
+    @Inject
+    private ServletContext context;
     public LoginController() {
     }
 
@@ -80,7 +82,9 @@ public class LoginController implements Serializable {
     }
 
     public void fillLOginFormValues() {
-        TenantListClient dgrftlc = new TenantListClient();
+        String hedwigServer = context.getInitParameter("HedwigServerName");
+        String hedwigServerPort = context.getInitParameter("HedwigServerPort");
+        TenantListClient dgrftlc = new TenantListClient(hedwigServer,hedwigServerPort);
         List<TenantDTO> tenantDTOs = dgrftlc.getTenantList(productID);
         tenantMap = new HashMap<>();
         for (TenantDTO tdto : tenantDTOs) {
@@ -89,12 +93,15 @@ public class LoginController implements Serializable {
     }
 
     public String login() {
-        //userAuthBean = new UserAuthBean();
-        UserAuthClient uac = new UserAuthClient();
+        String hedwigServer = context.getInitParameter("HedwigServerName");
+        String hedwigServerPort = context.getInitParameter("HedwigServerPort");
+        userAuthDTO.setHedwigServer(hedwigServer);
+        userAuthDTO.setHedwigServerPort(hedwigServerPort);
         userAuthDTO.setUserId(userID);
         userAuthDTO.setPassword(password);
         userAuthDTO.setProductId(productID);
         userAuthDTO.setTenantId(tenantID);
+        UserAuthClient uac = new UserAuthClient(userAuthDTO.getHedwigServer(),userAuthDTO.getHedwigServerPort());
         userAuthDTO = uac.authenticateUser(userAuthDTO);
         FacesMessage message;
 
@@ -173,8 +180,9 @@ public class LoginController implements Serializable {
 
     public String moveToDefaultHost() {
         productID = 4;
-
-        TenantListClient dgrftlc = new TenantListClient();
+        String hedwigServer = context.getInitParameter("HedwigServerName");
+        String hedwigServerPort = context.getInitParameter("HedwigServerPort");
+        TenantListClient dgrftlc = new TenantListClient(hedwigServer,hedwigServerPort);
         List<TenantDTO> tenantDTOs = dgrftlc.getTenantList(productID);
         if (tenantDTOs == null) {
             return "access";
@@ -208,10 +216,10 @@ public class LoginController implements Serializable {
         iconAndLogo = contextPath + "/faces/javax.faces.resource/term/images/logo.png";
         selectedHomeImg = contextPath + "/faces/javax.faces.resource/term/images/default-home-img.jpg";
         setAuthCredentials();
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
 
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termInstanceDTO.setTermSlug(CMSConstants.APPEARENCE_TERM_SLUG);
         termInstanceDTO.setTermInstanceSlug("default");
         termInstanceDTO = mts.getTermInstanceList(termInstanceDTO);
@@ -222,22 +230,22 @@ public class LoginController implements Serializable {
             String iconLogoImageInstanceSlug = (String) activeSettings.get(AppearenceMeta.SITE_LOGO);
             String homeScreenLogoImageInstanceSlug = (String) activeSettings.get(AppearenceMeta.HOME_PAGE_LOGO);
             //get theme
-            termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+            termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
             termInstanceDTO.setTermSlug("colorthemes");
             termInstanceDTO.setTermInstanceSlug(activeThemeInstanceSlug);
             Map<String, Object> activeThemeInstance = mts.getTermInstance(termInstanceDTO).getTermInstance();
             //get home screen image
-            termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+            termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
             termInstanceDTO.setTermSlug(CMSConstants.MEDIA_TERM_SLUG);
             termInstanceDTO.setTermInstanceSlug(homeScreenImageInstanceSlug);
             Map<String, Object> homeScreenImageInstance = mts.getTermInstance(termInstanceDTO).getTermInstance();
             //get icon and logo
-            termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+            termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
             termInstanceDTO.setTermSlug(CMSConstants.MEDIA_TERM_SLUG);
             termInstanceDTO.setTermInstanceSlug(iconLogoImageInstanceSlug);
             Map<String, Object> iconLogoImageInstance = mts.getTermInstance(termInstanceDTO).getTermInstance();
             //get home screen logo
-            termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+            termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
             termInstanceDTO.setTermSlug(CMSConstants.MEDIA_TERM_SLUG);
             termInstanceDTO.setTermInstanceSlug(homeScreenLogoImageInstanceSlug);
             Map<String, Object> homeScreenLogoImageInstance = mts.getTermInstance(termInstanceDTO).getTermInstance();
@@ -259,6 +267,8 @@ public class LoginController implements Serializable {
         authCredentials.setUserId(userAuthDTO.getUserId());
         authCredentials.setPassword(userAuthDTO.getPassword());
         authCredentials.setRoleId(userAuthDTO.getRoleId());
+        authCredentials.setHedwigServer(userAuthDTO.getHedwigServer());
+        authCredentials.setHedwigServerPort(userAuthDTO.getHedwigServerPort());
         CMSClientAuthCredentialValue.AUTH_CREDENTIALS = authCredentials;
 
     }

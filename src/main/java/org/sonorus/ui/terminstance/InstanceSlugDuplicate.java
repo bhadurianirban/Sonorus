@@ -13,7 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
-import org.leviosa.core.driver.CMSClientService;
+import org.leviosa.core.driver.LeviosaClientService;
 import org.hedwig.cms.dto.TermInstanceDTO;
 import org.sonorus.ui.login.CMSClientAuthCredentialValue;
 import org.primefaces.validate.ClientValidator;
@@ -36,13 +36,13 @@ public class InstanceSlugDuplicate implements Validator, ClientValidator {
         if (o == null) {
             return;
         }
-        //CMSClientService mts = new CMSClientService();
+        //CMSClientService mts = new LeviosaClientService();
         String termInstanceSlug = (String)o;
         //boolean slugExists = mts.isExistsTermInstanceSlug(termInstanceSlug);
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termInstanceDTO.setTermInstanceSlug(termInstanceSlug);
         termInstanceDTO = mts.isExistsTermInstanceSlug(termInstanceDTO);
         boolean slugExists;

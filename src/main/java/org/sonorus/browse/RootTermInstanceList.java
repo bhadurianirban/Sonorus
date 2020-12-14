@@ -18,8 +18,8 @@ import javax.faces.view.ViewScoped;
 import org.hedwig.cloud.response.HedwigResponseCode;
 import org.hedwig.cloud.response.HedwigResponseMessage;
 
-import org.leviosa.core.driver.CMSClientService;
-import org.hedwig.cms.constants.CMSConstants;
+import org.leviosa.core.driver.LeviosaClientService;
+import org.hedwig.leviosa.constants.CMSConstants;
 
 import org.hedwig.cms.dto.TermDTO;
 import org.hedwig.cms.dto.TermInstanceDTO;
@@ -56,23 +56,23 @@ public class RootTermInstanceList implements Serializable {
 
     public void fillTermMetaData() {
 
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
         TermDTO termDTO = new TermDTO();
-        termDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termDTO.setTermSlug(termSlug);
         termDTO = mts.getTermDetails(termDTO);
         termName = (String) termDTO.getTermDetails().get(CMSConstants.TERM_NAME);
 
         //Creation of grid
         TermMetaDTO termMetaDTO = new TermMetaDTO();
-        termMetaDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termMetaDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termMetaDTO.setTermSlug(termSlug);
         termMetaDTO = mts.getTermMetaList(termMetaDTO);
         List<Map<String, Object>> termScreenFields = termMetaDTO.getTermMetaFields();
 
         //get instance data
         TermInstanceDTO termInstanceDTO = new TermInstanceDTO();
-        termInstanceDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termInstanceDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         termInstanceDTO.setTermSlug(termSlug);
         termInstanceDTO = mts.getTermInstanceList(termInstanceDTO);
         screenTermInstanceList = termInstanceDTO.getTermInstanceList();
@@ -97,9 +97,9 @@ public class RootTermInstanceList implements Serializable {
     }
 
     public String browseTermInstance() {
-        CMSClientService mts = new CMSClientService();
+        LeviosaClientService mts = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
         TermMetaDTO termMetaDTO = new TermMetaDTO();
-        termMetaDTO.setAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
+        termMetaDTO.setHedwigAuthCredentials(CMSClientAuthCredentialValue.AUTH_CREDENTIALS);
         String pts = (String) selectedTermInstance.get(CMSConstants.TERM_SLUG);
         String ptis = (String) selectedTermInstance.get(CMSConstants.TERM_INSTANCE_SLUG);
         termMetaDTO.setTermSlug(pts);
