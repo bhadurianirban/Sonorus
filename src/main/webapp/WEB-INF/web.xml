@@ -20,6 +20,10 @@
         <param-name>HedwigServerName</param-name>
         <param-value>localhost</param-value>
     </context-param>
+    <context-param>
+        <param-name>HedwigServerPort</param-name>
+        <param-value>8080</param-value>
+    </context-param>    
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
