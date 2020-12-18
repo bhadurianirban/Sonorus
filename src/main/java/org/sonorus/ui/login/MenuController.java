@@ -11,7 +11,6 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import org.leviosa.core.client.MenuClient;
-import org.leviosa.core.driver.LeviosaClientService;
 import org.hedwig.cms.dto.MenuDTO;
 import org.hedwig.cms.dto.MenuNode;
 import org.primefaces.model.menu.DefaultMenuItem;
@@ -52,17 +51,16 @@ public class MenuController {
             menuDTO = menuListGet.getMenuTree(menuDTO);
             MenuNode authorisedMenuRoot = menuDTO.getRootMenuNode();
             List<MenuNode> rootMenuForest = authorisedMenuRoot.getChildren();
-            DefaultSubMenu rootMenu = new DefaultSubMenu("User Menu");
+            DefaultSubMenu rootMenu = DefaultSubMenu.builder().label("User Menu").build();
             //LeviosaClientService ms = new LeviosaClientService(CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServer(),CMSClientAuthCredentialValue.AUTH_CREDENTIALS.getHedwigServerPort());
             buildMultiMenu(rootMenuForest, rootMenu);
             List<MenuElement> userMenuList = rootMenu.getElements();
             for (MenuElement userMenu : userMenuList) {
-                menuModel.addElement(userMenu);
+                menuModel.getElements().add(userMenu);
             }
-            DefaultMenuItem browseTerms = new DefaultMenuItem("Browse");
             String termBrowseUrl = "/cms/browse/RootTermList?faces-redirect=true";
-            browseTerms.setOutcome(termBrowseUrl);
-            menuModel.addElement(browseTerms);
+            DefaultMenuItem browseTerms = DefaultMenuItem.builder().value("Browse").outcome(termBrowseUrl).build();
+            menuModel.getElements().add(browseTerms);
             //menuModel.addElement(menuMaker.getUserMenu());
 
         }
@@ -73,17 +71,15 @@ public class MenuController {
 
             if (menuNode.getChildren() == null) {
                 //this is a leaf node
-                DefaultMenuItem userMenuLeafNode;
                 String termName = menuNode.getTermName();
                 String termUrl = menuNode.getTermUrl();
                 termUrl = "/cms" + termUrl + "?faces-redirect=true&termslug=" + menuNode.getTermSlug();
-                userMenuLeafNode = new DefaultMenuItem(termName);
-                userMenuLeafNode.setOutcome(termUrl);
-                userMenu.addElement(userMenuLeafNode);
+                DefaultMenuItem userMenuLeafNode = DefaultMenuItem.builder().value(termName).outcome(termUrl).build();
+                userMenu.getElements().add(userMenuLeafNode);
             } else {
                 //this is not a leaf node
-                DefaultSubMenu userMenuNode = new DefaultSubMenu(menuNode.getName());
-                userMenu.addElement(userMenuNode);
+                DefaultSubMenu userMenuNode = DefaultSubMenu.builder().label(menuNode.getName()).build();
+                userMenu.getElements().add(userMenuNode);
                 buildMultiMenu(menuNode.getChildren(), userMenuNode);
 
             }
