@@ -28,7 +28,7 @@
                 </f:metadata>
                 <h:form>
                     <div class="ui-g ui-fluid" style="text-align: left">
-                        <p:growl id="growl" sticky="true" showDetail="true" life="5" autoUpdate="true" />
+                        <p:growl id="growl" sticky="true" showDetail="true" life="5"  />
                         <div class="ui-g-6">
                             <p:outputLabel value="Select Tenant:" />
                         </div>
@@ -47,7 +47,7 @@
                         </div>
 
                         <div class="ui-g-6">
-                            <p:commandButton styleClass="button" value="Login"  action="#{loginController.login}" icon="fa fa-sign-in"/>
+                            <p:commandButton styleClass="button" value="Login"  action="#{loginController.login}" icon="fa fa-sign-in" update="@form"/>
                         </div>
                         <div class="ui-g-6">
                             <p:button value="Home" styleClass="button" outcome="index" icon="fa fa-home"/> 
